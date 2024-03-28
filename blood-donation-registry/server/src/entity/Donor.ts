@@ -1,9 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Validate } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { SocialSecurityConstraint } from "../validator/SocialSecurityValidator";
+import { Donation } from "./Donation";
 
-enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other'
+export enum Gender {
+  Male = 'férfi',
+  Female = 'nő',
+  Other = 'egyéb'
 }
 
 @Entity()
@@ -40,6 +43,11 @@ export class Donor {
       length: 9,
       unique: true
     })
+    @Validate(SocialSecurityConstraint)
     socialSecurity: string;
 
+    @OneToMany(type => Donation, donation => donation.donor)
+    donations: Donation[];
+
 }
+

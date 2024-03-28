@@ -1,13 +1,16 @@
 import { AppDataSource } from "./data-source";
 import express from 'express';
 import { getRoutes } from "./routes";
+import { Donor, Gender } from "./entity/Donor";
+import { validate } from "class-validator";
 
 async function main() {
   try {
     await AppDataSource.initialize();
+
     const app = express();
 
-    app.use(express.json);
+    app.use(express.json());
     app.use('/api', getRoutes());
 
     app.listen(3000, () => {
@@ -15,7 +18,7 @@ async function main() {
     });
 
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 }
 
