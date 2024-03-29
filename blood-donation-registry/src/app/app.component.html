@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark p-2" style="background-color: #900C3F;">
+<nav class="navbar navbar-expand-md navbar-dark p-2 sticky-top" style="background-color: #900C3F;">
   <a class="navbar-brand ms-4 me-4" href="#">Véradás nyilvántartó</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" (click)="isMenuCollapsed = !isMenuCollapsed" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" >
     <span class="navbar-toggler-icon" ></span>
@@ -21,6 +21,11 @@
     </ul>
   </div>
 </nav>
-<div class="container">
+<main class="container">
   <router-outlet />
-</div>
+</main>
+<footer class="footer fixed-bottom p-1 bg-light">
+  <div class="container d-flex justify-content-center">
+    <span class="small mb-1" style="color: #900C3F;">Palencsár Enikő - YD11NL - Informatikai rendszerek építése - 2024. tavasz - 11. feladat </span>
+  </div>
+</footer>

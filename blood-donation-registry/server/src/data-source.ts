@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     username: "root",
     database: "blood_donation",
     synchronize: true,
-    logging: false,
+    logging: true,
     entities: [Donor, DonationCenter, Donation, Beneficiary],
     migrations: [],
     subscribers: [],
