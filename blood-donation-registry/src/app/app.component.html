@@ -1,31 +1,31 @@
-<nav class="navbar navbar-expand-md navbar-dark p-2 sticky-top" style="background-color: #900C3F;">
+<nav class="navbar navbar-expand-md navbar-dark p-2 sticky-top bg-custom">
   <a class="navbar-brand ms-4 me-4" href="#">Véradás nyilvántartó</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" (click)="isMenuCollapsed = !isMenuCollapsed" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" >
     <span class="navbar-toggler-icon" ></span>
   </button>
   <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed" id="navbarNav" >
     <ul class="navbar-nav">
-      <li class="nav-item active" >
-        <a class="nav-link" (click)="isMenuCollapsed = true" href="/centers">Helyszínek</a>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeRoute == '/centers'"  (click)="navigateTo('/centers')">Helyszínek</a>
       </li>
-      <li class="nav-item" >
-        <a class="nav-link" (click)="isMenuCollapsed = true" href="/donors">Véradók</a>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeRoute == '/donors'"  (click)="navigateTo('/donors')">Véradók</a>
       </li>
-      <li class="nav-item" >
-        <a class="nav-link" (click)="isMenuCollapsed = true" href="/donations">Véradások</a>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeRoute == '/donations'" (click)="navigateTo('/donations')">Véradások</a>
       </li>
-      <li class="nav-item" >
-        <a class="nav-link" (click)="isMenuCollapsed = true" href="/addDonation">Véradás felvétele</a>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="activeRoute == '/registerDonation'" (click)="navigateTo('/registerDonation')">Véradás felvétele</a>
       </li>
 
     </ul>
   </div>
 </nav>
-<main class="container">
-  <router-outlet />
+<main class="container mb-5">
+  <router-outlet/>
 </main>
 <footer class="footer fixed-bottom p-1 bg-light">
   <div class="container d-flex justify-content-center">
-    <span class="small mb-1" style="color: #900C3F;">Palencsár Enikő - YD11NL - Informatikai rendszerek építése - 2024. tavasz - 11. feladat </span>
+    <span class="small mb-1 text-custom">Palencsár Enikő - YD11NL - Informatikai rendszerek építése - 2024. tavasz - 11. feladat </span>
   </div>
 </footer>

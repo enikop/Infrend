@@ -1,8 +1,7 @@
 import { AppDataSource } from "./data-source";
 import express from 'express';
 import { getRoutes } from "./routes";
-import { Donor, Gender } from "./entity/Donor";
-import { validate } from "class-validator";
+import boolParser from 'express-query-boolean';
 
 async function main() {
   try {
@@ -11,6 +10,8 @@ async function main() {
     const app = express();
 
     app.use(express.json());
+    //Booleans passed in query parameters don't get mistaken for strings
+    app.use(boolParser());
     app.use('/api', getRoutes());
 
     app.listen(3000, () => {

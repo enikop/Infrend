@@ -1,19 +1,22 @@
-<div class="row" style="font-weight: bold; font-size: large;">
-  <div class="col-md-1">Id</div>
-  <div class="col-md-4">Név</div>
-  <div class="col-md-5">Cím</div>
-  <div class="col-md-2">Módosít</div>
-  <span class="border-bottom mt-2 mb-3"></span>
-</div>
-
-<div class="row p-1" *ngFor="let center of centers">
-
-  <div class="col-md-1" [class.opacity-25]="!center.isActive">{{ center.id }}</div>
-  <div class="col-md-4" [class.opacity-25]="!center.isActive">{{ center.name }}</div>
-  <div class="col-md-5" [class.opacity-25]="!center.isActive">{{ center.address }}</div>
-  <div class="col-md-2 d-flex justify-content-center">
-    <button class="btn w-100" [class.btn-danger]="center.isActive" [class.btn-success]="!center.isActive"
-    (click)="toggleActive(center)">{{ center.isActive ? 'Inaktivál' : 'Aktivál' }}</button>
+<div class="container">
+  <h2 class="mb-4 text-center">Helyszínek</h2>
+  <div class="row" style="font-weight: bold; font-size: large;">
+    <div class="col-md-1">Id</div>
+    <div class="col-md-4">Név</div>
+    <div class="col-md-5">Cím</div>
+    <div class="col-md-2">Módosít</div>
+    <span class="border-bottom mt-2 mb-3"></span>
   </div>
 
+  <div class="row p-1" *ngFor="let center of centers">
+    <div class="col-md-1" [class.opacity-25]="!center.isActive">{{ center.id }}</div>
+    <div class="col-md-4" [class.opacity-25]="!center.isActive">{{ center.name }}</div>
+    <div class="col-md-5" [class.opacity-25]="!center.isActive">{{ center.address }}</div>
+    <div class="col-md-2 d-flex justify-content-center">
+      <button class="btn w-100" [class.btn-danger]="center.isActive" [class.btn-success]="!center.isActive"
+      (click)="toggleActive(center)">{{ center.isActive ? 'Inaktivál' : 'Aktivál' }}</button>
+    </div>
+
+  </div>
 </div>
+

@@ -17,6 +17,13 @@ export class CenterListComponent {
   constructor(private donationCenterService: DonationCenterService){  }
 
   ngOnInit(){
+    this.donationCenterService.getChangeSubject().subscribe(() => {
+      this.loadCenters();
+    })
+    this.loadCenters();
+  }
+
+  loadCenters(){
     this.donationCenterService.getAll().subscribe({
       next: (center) => {
         this.centers = center;
@@ -24,11 +31,11 @@ export class CenterListComponent {
       error: (err) => {
         console.log(err);
       }
-    })
+    });
   }
 
   toggleActive(center: DonationCenterDTO){
     center.isActive = !center.isActive;
-    this.donationCenterService.update(center).subscribe({});
+    this.donationCenterService.update(center).subscribe();
   }
 }

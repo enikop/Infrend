@@ -1,0 +1,60 @@
+<div class="container">
+  <h2 class="mb-3 text-center">Új véradó felvétele</h2>
+  <form (ngSubmit)="saveDonor([name, citizenship, address, date, place, socialsecurity])" #form="ngForm">
+    <div class="form-group mb-1">
+      <label for="name">Név</label>
+      <input type="text" class="form-control" id="name" name="name" pattern="^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$" [(ngModel)]="newDonor.name" required #name="ngModel">
+      <div class="text-danger form-text" *ngIf="name.invalid && name.touched">{{errorMessage.name}}</div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="gender">Nem</label>
+          <select class="form-control form-select" id="gender" name="gender" [(ngModel)]="newDonor.gender" required>
+            <option *ngFor="let option of genderOptions" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="citizenship">Állampolgárság</label>
+          <input type="text" class="form-control" id="citizenship" name="citizenship" pattern="^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$" [(ngModel)]="newDonor.citizenship" required #citizenship="ngModel">
+          <div class="text-danger form-text" *ngIf="citizenship.invalid && citizenship.touched">{{errorMessage.citizenship}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-1">
+      <label for="address">Lakcím</label>
+      <input type="text" class="form-control" id="address" name="address" pattern="^[0-9A-Z]+ [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-]+" [(ngModel)]="newDonor.address" required #address="ngModel">
+      <div class="text-danger form-text" *ngIf="address.invalid && address.touched">{{errorMessage.address}}</div>
+    </div>
+    <div class="row mb-1">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="birthPlace">Születési hely</label>
+          <input type="text" class="form-control" id="birthPlace" name="birthPlace" pattern="^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$" [(ngModel)]="newDonor.birthPlace" required #place="ngModel">
+          <div class="text-danger form-text" *ngIf="place.invalid && place.touched">{{errorMessage.birthPlace}}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="birthDate">Születési idő</label>
+          <input type="date" class="form-control" id="birthDate" name="birthDate" max="{{ maxDate }}" [(ngModel)]="newDonor.birthDate" #date="ngModel" (ngModelChange)="validateDate(date)">
+          <div class="text-danger form-text" *ngIf="date.invalid">{{errorMessage.birthDate}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mb-1">
+      <label for="socialSecurity">TAJ szám</label>
+      <input type="text" class="form-control" id="socialSecurity" name="socialSecurity" pattern="[0-9]{9}" [(ngModel)]="newDonor.socialSecurity" required #socialsecurity="ngModel" (ngModelChange)="validateSocialSecurity(socialsecurity)">
+      <div class="text-danger form-text" *ngIf="socialsecurity.invalid && socialsecurity.touched">{{errorMessage.socialSecurity}}</div>
+    </div>
+    <div class="row mb-2 align-items-center">
+      <div class="col-md-6"></div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <button type="submit" class="btn btn-custom">Létrehoz</button>
+      </div>
+    </div>
+  </form>
+</div>
+

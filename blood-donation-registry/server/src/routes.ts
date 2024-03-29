@@ -24,6 +24,7 @@ export function getRoutes(){
   //router.delete('/donationCenter/:id', donationCenterController.delete);
 
   router.get('/donation', donationController.getAll);
+  router.get('/donation/filteredBy', donationController.getAllFiltered);
   router.get('/donation/:id', donationController.getOne);
   router.post('/donation', donationController.create);
   //router.put('/donation', donationController.update);

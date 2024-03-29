@@ -13,6 +13,10 @@ export class DonationService {
      return this.http.get<DonationDTO[]>('api/donation');
   }
 
+  getAllFiltered(filters: any) {
+    return this.http.get<DonationDTO[]>('api/donation/filteredBy', {params: filters});
+  }
+
   getOne(id: number) {
     return this.http.get<DonationDTO>('api/donation/' + id);
   }

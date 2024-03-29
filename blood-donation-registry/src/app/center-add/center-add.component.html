@@ -1,1 +1,26 @@
-<p>center-add works!</p>
+<div class="container">
+  <h2 class="mb-3 text-center">Új helyszín felvétele</h2>
+  <form (ngSubmit)="saveCenter([address, name])" #form="ngForm">
+    <div class="form-group mb-1">
+      <label for="name">Név</label>
+      <input type="text" class="form-control" id="name" name="name" pattern="^[0-9\wíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{1}[\s\SíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{3,}" [(ngModel)]="newCenter.name" #name="ngModel" required>
+      <div class="text-danger form-text" *ngIf="name.invalid && name.touched">{{nameErrorMessage}}</div>
+    </div>
+    <div class="form-group mb-2">
+      <label for="address">Cím</label>
+      <input type="text" class="form-control" id="address" name="address" pattern="^[0-9]{4} [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-]+" [(ngModel)]="newCenter.address" #address="ngModel" required>
+      <div class="text-danger form-text" *ngIf="address.invalid && address.touched">{{addressErrorMessage}}</div>
+    </div>
+    <div class="row mb-2 align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="isActive" name="isActive" [(ngModel)]="newCenter.isActive">
+          <label class="form-check-label" for="isActive">Aktív</label>
+        </div>
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <button type="submit" class="btn btn-custom">Létrehoz</button>
+      </div>
+    </div>
+  </form>
+</div>

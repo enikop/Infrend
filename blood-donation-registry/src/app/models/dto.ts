@@ -1,3 +1,5 @@
+export type GenderType = 'nő' | 'férfi' | 'egyéb';
+export const GENDER_OPTIONS: GenderType[] = ['nő', 'férfi', 'egyéb'];
 export interface DonationCenterDTO {
   id: number;
   name: string;
@@ -9,7 +11,7 @@ export interface DonationCenterDTO {
 export interface DonorDTO {
   id: number;
   name: string;
-  gender: 'nő' | 'férfi' | 'egyéb';
+  gender: GenderType;
   citizenship: string;
   birthPlace: string;
   birthDate: string;
