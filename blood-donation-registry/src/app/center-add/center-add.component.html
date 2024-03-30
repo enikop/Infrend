@@ -1,10 +1,21 @@
 <div class="container">
   <h2 class="mb-3 text-center">Új helyszín felvétele</h2>
-  <form (ngSubmit)="saveCenter([address, name])" #form="ngForm">
-    <div class="form-group mb-1">
-      <label for="name">Név</label>
-      <input type="text" class="form-control" id="name" name="name" pattern="^[0-9\wíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{1}[\s\SíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{3,}" [(ngModel)]="newCenter.name" #name="ngModel" required>
-      <div class="text-danger form-text" *ngIf="name.invalid && name.touched">{{nameErrorMessage}}</div>
+  <form (ngSubmit)="saveCenter([institutionid, address, name])" #form="ngForm">
+    <div class="row mb-1">
+      <div class="col-md-4">
+        <div class="form-group mb-1">
+          <label for="institutionid">Azonosító</label>
+          <input type="text" class="form-control" id="institutionid" name="institutionid" pattern="^[0-9]{6}$" [(ngModel)]="newCenter.institutionId" #institutionid="ngModel" required>
+          <div class="text-danger form-text" *ngIf="institutionid.invalid && institutionid.touched">{{institutionIdErrorMessage}}</div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="form-group mb-1">
+          <label for="name">Név</label>
+          <input type="text" class="form-control" id="name" name="name" pattern="^[0-9\wíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{1}[\s\SíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{3,}" [(ngModel)]="newCenter.name" #name="ngModel" required>
+          <div class="text-danger form-text" *ngIf="name.invalid && name.touched">{{nameErrorMessage}}</div>
+        </div>
+      </div>
     </div>
     <div class="form-group mb-2">
       <label for="address">Cím</label>

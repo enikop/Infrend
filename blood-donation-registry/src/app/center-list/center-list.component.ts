@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
 import { CommonModule } from '@angular/common';
 import { DonationCenterDTO } from '../models/dto';
@@ -12,14 +12,18 @@ import { DonationCenterDTO } from '../models/dto';
 })
 export class CenterListComponent {
 
+  @Input()
+  changeCount !: number;
+
   centers : DonationCenterDTO[] = [];
 
   constructor(private donationCenterService: DonationCenterService){  }
 
   ngOnInit(){
-    this.donationCenterService.getChangeSubject().subscribe(() => {
-      this.loadCenters();
-    })
+    this.loadCenters();
+  }
+
+  ngOnChanges(changes: { [property: string]: SimpleChange }) {
     this.loadCenters();
   }
 
@@ -36,6 +40,11 @@ export class CenterListComponent {
 
   toggleActive(center: DonationCenterDTO){
     center.isActive = !center.isActive;
-    this.donationCenterService.update(center).subscribe();
+    this.donationCenterService.update(center).subscribe({
+      error: () => {
+        center.isActive = !center.isActive;
+        alert("Hiba történt.");
+      }
+    });
   }
 }

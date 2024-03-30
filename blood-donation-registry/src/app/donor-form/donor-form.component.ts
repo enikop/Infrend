@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { DonorDTO, GENDER_OPTIONS } from '../models/dto';
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
 import { FormsModule, NgModel } from '@angular/forms';
+import { isSocialSecurityValid } from '../helpers/helpers';
 
 @Component({
   selector: 'app-donor-form',
@@ -12,6 +13,9 @@ import { FormsModule, NgModel } from '@angular/forms';
   styleUrl: './donor-form.component.css'
 })
 export class DonorFormComponent {
+
+  @Output()
+  donorChangeEvent= new EventEmitter<void>();
 
   newDonor : DonorDTO = this.defaultDonor();
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
@@ -47,30 +51,11 @@ export class DonorFormComponent {
 
   validateSocialSecurity(secModel: NgModel){
     const socialSecNumber = secModel.value;
-    if(this.isSocialSecurityValid(socialSecNumber)){
+    if(isSocialSecurityValid(socialSecNumber)){
       secModel.control.setErrors(null);
     } else {
       secModel.control.setErrors({ 'socialsecurityInvalid': true });
     }
-  }
-
-  isSocialSecurityValid(socialSecNumber: string): boolean {
-    //if empty or not containing 9 digits
-    if (!socialSecNumber || !/^\d{9}$/.test(socialSecNumber)) {
-      return false;
-    }
-    const digitArray = socialSecNumber.split('');
-
-    //the last digit to int
-    const checkDigit = parseInt(digitArray[8]);
-
-    //calculate checksum
-    var sum = 0;
-    for(var i = 0; i < digitArray.length - 1; i++){
-      const digit = parseInt(digitArray[i]);
-      sum += i % 2 == 0 ? 3 * digit : 7 * digit;
-    }
-    return sum % 10 == checkDigit;
   }
 
   saveDonor(models: NgModel[]){
@@ -82,6 +67,7 @@ export class DonorFormComponent {
           for(var model of models){
             model.control.markAsUntouched();
           }
+          this.donorChangeEvent.emit();
         },
         error: (err) => {
           alert("Operation unsuccessful, invalid data.");

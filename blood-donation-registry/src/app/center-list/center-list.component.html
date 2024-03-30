@@ -13,7 +13,7 @@
     </div>
 
     <div class="row p-1" *ngFor="let center of centers">
-      <div class="col-md-1" [class.opacity-25]="!center.isActive">{{ center.id }}</div>
+      <div class="col-md-1" [class.opacity-25]="!center.isActive">{{ center.institutionId }}</div>
       <div class="col-md-4" [class.opacity-25]="!center.isActive">{{ center.name }}</div>
       <div class="col-md-5" [class.opacity-25]="!center.isActive">{{ center.address }}</div>
       <div class="col-md-2 d-flex justify-content-center">

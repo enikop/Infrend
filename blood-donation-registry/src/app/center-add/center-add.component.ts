@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
 import { DonationCenterDTO } from '../models/dto';
 import { FormsModule, NgModel } from '@angular/forms';
@@ -13,7 +13,11 @@ import { CommonModule } from '@angular/common';
 })
 export class CenterAddComponent {
 
+  @Output()
+  centerChangeEvent = new EventEmitter<void>();
+
   newCenter: DonationCenterDTO = this.defaultCenter();
+  institutionIdErrorMessage: string = "A szervezeti azonosító hatjegyű szám.";
   nameErrorMessage: string = "Az érvényes nevek legalább 4 karakter hosszúak, és számmal vagy betűvel kezdődnek.";
   addressErrorMessage:string = "Érvényes címformátum (csak magyarországi): 1055 Budapest, Kossuth Lajos tér 1-3.";
 
@@ -28,6 +32,7 @@ export class CenterAddComponent {
           for(var model of models){
             model.control.markAsUntouched();
           }
+          this.centerChangeEvent.emit();
         },
         error: (err) => {
           alert("Operation unsuccessful, invalid data.");
@@ -50,6 +55,7 @@ export class CenterAddComponent {
   defaultCenter() : DonationCenterDTO {
     return {
       id: -1,
+      institutionId: "",
       name: "",
       address: "",
       isActive: true,

@@ -1,1 +1,67 @@
-<p>donation-form works!</p>
+<div class="container">
+  <h2 class="mb-3 mt-3 text-center">Új véradás felvétele</h2>
+  <div class="row" *ngIf="!canCreateNew"><i>Nem vehető fel új véradás, hozzon létre legalább egy helyszínt és véradót.</i></div>
+  <form *ngIf="canCreateNew"
+  (ngSubmit)="saveDonation({general: [date, doctor], eligibleBound: [reason]})"
+  #form="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group mb-1">
+          <label for="place">Helyszín</label>
+          <select class="form-control" id="place" name="place" [(ngModel)]="newDonation.place">
+            <option *ngFor="let center of centers" [ngValue]="center">{{ center.name }} ({{center.institutionId}})</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mb-1">
+          <label for="donor">Véradó</label>
+          <select class="form-control" id="donor" name="donor" [(ngModel)]="newDonation.donor">
+            <option *ngFor="let donor of donors" [ngValue]="donor">{{donor.name}} ({{formatSocialSecurity(donor.socialSecurity)}})</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+    <div class="form-group mb-1">
+      <label for="date">Dátum</label>
+      <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newDonation.date" #date="ngModel" (ngModelChange)="validateDate(date)" required>
+      <div class="text-danger form-text" *ngIf="date.invalid">{{errorMessage.date}}</div>
+    </div>
+
+    <div class="form-group mb-1">
+      <label for="doctor">Vizsgálatot elvégző orvos neve</label>
+      <input type="text" class="form-control" id="doctor" name="doctor" pattern="^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$" [(ngModel)]="newDonation.doctor" #doctor="ngModel" required>
+      <div class="text-danger form-text" *ngIf="doctor.invalid && doctor.touched">{{errorMessage.doctor}}</div>
+    </div>
+
+    <div class="form-check mb-1">
+      <input class="form-check-input" type="checkbox" id="eligible" name="eligible" [(ngModel)]="newDonation.eligible">
+      <label class="form-check-label" for="eligible">Alkalmasnak találva</label>
+    </div>
+
+    <div class="form-group mb-1" [hidden]="newDonation.eligible">
+      <label for="reason">Indoklás</label>
+      <input type="text" class="form-control" id="reason" name="reason" [(ngModel)]="newDonation.reason" #reason="ngModel" required>
+      <div class="text-danger form-text" *ngIf="reason.invalid && reason.touched">{{errorMessage.reason}}</div>
+    </div>
+
+    <div class="form-check mb-1" [hidden]="!newDonation.eligible">
+      <input class="form-check-input" type="checkbox" id="directed" name="directed" [(ngModel)]="newDonation.directed" [disabled]="!newDonation.beneficiary">
+      <label class="form-check-label" for="directed">Irányított véradás {{ newDonation.beneficiary ? '': '(nincs felvéve beteg)'}}</label>
+    </div>
+
+    <div class="row" [hidden]="!newDonation.directed || !newDonation.eligible">
+      <div class="form-group mb-1">
+        <label for="place">Beteg</label>
+        <select class="form-control" id="beneficiary" name="beneficiary" [(ngModel)]="newDonation.beneficiary">
+          <option *ngFor="let beneficiary of beneficiaries" [ngValue]="beneficiary">{{ beneficiary.name }} ({{formatSocialSecurity(beneficiary.socialSecurity)}})</option>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end mt-2">
+      <button type="submit" class="btn btn-custom">Mentés</button>
+    </div>
+  </form>
+  <app-beneficiary-form (beneficiaryChangeEvent)="loadBeneficiaries()" [hidden]="(!newDonation.directed || !newDonation.eligible) && newDonation.beneficiary"></app-beneficiary-form>
+</div>

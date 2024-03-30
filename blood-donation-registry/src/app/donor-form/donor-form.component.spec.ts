@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DonorFormComponent } from './donor-form.component';
+import { DonorFormComponent } from '../helpers/helpers';
 
 describe('DonorFormComponent', () => {
   let component: DonorFormComponent;
@@ -11,7 +11,7 @@ describe('DonorFormComponent', () => {
       imports: [DonorFormComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(DonorFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

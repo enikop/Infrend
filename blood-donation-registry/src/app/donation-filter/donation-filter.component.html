@@ -5,11 +5,11 @@
         <div class="form-group">
           <label for="filterType">Szűrés</label>
           <select class="form-control" id="filterType" [(ngModel)]="selectedFilterType" name="filterType">
-            <option value="all">Mutasd mindet</option>
+            <option value="all">Mind</option>
             <option value="success">Csak a sikeres véradások</option>
-            <option value="place">Helyszín alapján</option>
-            <option value="donor">Véradó alapján</option>
-            <option value="date">Intervallumra</option>
+            <option value="place">Helyszín alapján (csak sikeres)</option>
+            <option value="donor">Véradó alapján (csak sikeres)</option>
+            <option value="date">Intervallumra (csak sikeres)</option>
           </select>
         </div>
       </div>
@@ -17,14 +17,14 @@
         <div *ngIf="selectedFilterType === 'place'" class="form-group">
           <label for="place">Helyszín</label>
           <select class="form-control" id="place" name="place" [(ngModel)]="chosenCenterId">
-            <option *ngFor="let center of centers" [value]="center.id">{{ center.name }}</option>
+            <option *ngFor="let center of centers" [value]="center.id">{{ center.name }} ({{center.institutionId}})</option>
           </select>
         </div>
 
         <div *ngIf="selectedFilterType === 'donor'" class="form-group">
           <label for="donor">Véradó</label>
           <select class="form-control" id="donor" name="donor" [(ngModel)]="chosenDonorId" #donorInput>
-            <option *ngFor="let donor of donors" [value]="donor.id">{{donor.name}} ({{donor.socialSecurity}})</option>
+            <option *ngFor="let donor of donors" [value]="donor.id">{{donor.name}} ({{formatSocialSecurity(donor.socialSecurity)}})</option>
           </select>
         </div>
         <div *ngIf="selectedFilterType === 'date'" class="form-group">

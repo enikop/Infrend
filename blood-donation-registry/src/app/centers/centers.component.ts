@@ -11,4 +11,9 @@ import { CenterAddComponent } from '../center-add/center-add.component';
 })
 export class CentersComponent {
 
+  changeCount: number = 0;
+
+  increaseChangeCount() {
+    this.changeCount++;
+  }
 }

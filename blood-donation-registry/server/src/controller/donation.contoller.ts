@@ -13,10 +13,14 @@ export class DonationController extends Controller {
         if ('startDate' in filterParams && 'endDate' in filterParams){
           const startDate = filterParams.startDate as string;
           const endDate = filterParams.endDate as string;
-          const entities = await this.repository.find({
-            where: {
-              date: Between(startDate, endDate)
+          var whereCondition = {date: Between(startDate, endDate)};
+          for (const key in filterParams) {
+            if (filterParams.hasOwnProperty(key) && key !== 'startDate' && key !== 'endDate') {
+              whereCondition[key] = filterParams[key];
             }
+          }
+          const entities = await this.repository.find({
+            where: whereCondition,
           });
           res.json(entities);
         } else {

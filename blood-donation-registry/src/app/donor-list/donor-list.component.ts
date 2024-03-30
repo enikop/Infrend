@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { DonorService } from '../service/donor.service';
 import { DonorDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
@@ -13,14 +13,18 @@ import { formatDate, formatSocialSecurity } from '../helpers/helpers';
 })
 export class DonorListComponent {
 
+  @Input()
+  changeCount!: number;
+
   donors : DonorDTO[] = [];
 
   constructor(private donorService: DonorService){  }
 
   ngOnInit(){
-    this.donorService.getChangeSubject().subscribe(() => {
-      this.loadDonors();
-    })
+    this.loadDonors();
+  }
+
+  ngOnChanges(changes: { [property: string]: SimpleChange }) {
     this.loadDonors();
   }
 

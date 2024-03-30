@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row mt-3">
       <div class="col-md-12">
-          <app-donor-form></app-donor-form>
+          <app-donor-form (donorChangeEvent)="increaseChangeCount()"></app-donor-form>
       </div>
   </div>
   <hr>
   <div class="row">
       <div class="col-md-12">
-          <app-donor-list></app-donor-list>
+          <app-donor-list [changeCount]="changeCount"></app-donor-list>
       </div>
   </div>
 </div>

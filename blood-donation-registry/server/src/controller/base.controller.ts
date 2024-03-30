@@ -13,6 +13,16 @@ export abstract class Controller {
         }
     };
 
+    getAllFiltered = async (req:Request, res:Response) => {
+      try {
+          const filterParams = req.query;
+          const entities = await this.repository.find({where: filterParams});
+          res.json(entities);
+      } catch (err) {
+          this.handleError(res, err);
+      }
+   };
+
     getOne = async (req:Request, res:Response) => {
         try {
             const id = req.params.id;
@@ -78,6 +88,11 @@ export abstract class Controller {
             console.error(err);
         }
 
-        res.status(status).json({ error: message });
+        if(err.code == 'ER_DUP_ENTRY'){
+          //422 Unprocessable Entity
+          res.status(422).json({ error: err.code })
+        } else {
+          res.status(status).json({ error: message });
+        }
     }
 }

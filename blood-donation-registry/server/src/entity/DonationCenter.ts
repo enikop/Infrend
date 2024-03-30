@@ -7,6 +7,12 @@ export class DonationCenter {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({
+      unique: true,
+      length: 6
+    })
+    institutionId: string ; //OTH kód
+
     @Column()
     name: string;
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DonorFormComponent } from '../donor-form/donor-form.component';
 import { DonorListComponent } from '../donor-list/donor-list.component';
+import { DonorFormComponent } from '../donor-form/donor-form.component';
 
 @Component({
   selector: 'app-donors',
@@ -10,5 +10,9 @@ import { DonorListComponent } from '../donor-list/donor-list.component';
   styleUrl: './donors.component.css'
 })
 export class DonorsComponent {
+  changeCount = 0;
 
+  increaseChangeCount() {
+    this.changeCount++;
+  }
 }

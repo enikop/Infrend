@@ -5,7 +5,7 @@ import { DonationService } from '../service/donation.service';
 import { FormsModule } from '@angular/forms';
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
-import { isIntervalValid, formatDate, formatSocialSecurity } from '../helpers/helpers';
+import { isIntervalValid, formatSocialSecurity } from '../helpers/helpers';
 
 
 @Component({
@@ -102,18 +102,21 @@ export class DonationFilterComponent {
         this.loadFilteredDonations({ eligible: true });
         break;
       case 'place':
-        this.loadFilteredDonations({ "place.id": this.chosenCenterId });
+        this.loadFilteredDonations({ eligible: true, "place.id": this.chosenCenterId });
         break;
       case 'donor':
-        this.loadFilteredDonations({ "donor.id": this.chosenDonorId});
+        this.loadFilteredDonations({ eligible: true, "donor.id": this.chosenDonorId});
         break;
       case 'date':
         if(isIntervalValid(this.chosenInterval.startDate, this.chosenInterval.endDate)){
-          this.loadFilteredDonations(this.chosenInterval);
+          this.loadFilteredDonations({startDate: this.chosenInterval.startDate, endDate: this.chosenInterval.endDate, eligible: true});
         } else {
           alert("Hibás adatok.")
         }
         break;
     }
+  }
+  formatSocialSecurity(socialSecurity: string) : string{
+    return formatSocialSecurity(socialSecurity);
   }
 }
