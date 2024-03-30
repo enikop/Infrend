@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="form-group mb-1">
+    <div class="form-group mb-3">
       <label for="socialSecurity">TAJ szám</label>
       <input type="text" class="form-control" id="socialSecurity" name="socialSecurity" pattern="[0-9]{9}" [(ngModel)]="newDonor.socialSecurity" required #socialsecurity="ngModel" (ngModelChange)="validateSocialSecurity(socialsecurity)">
       <div class="text-danger form-text" *ngIf="socialsecurity.invalid && socialsecurity.touched">{{errorMessage.socialSecurity}}</div>

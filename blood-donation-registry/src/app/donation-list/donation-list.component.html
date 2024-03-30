@@ -1,57 +1,10 @@
 <div class="container">
   <h2 class="mb-4 mt-4 text-center">Véradások</h2>
-  <div class="row">
-    <form (ngSubmit)="applyFilter()">
-      <div class="row align-items-start mb-2">
-        <div class="col-md-5 mb-1">
-          <div class="form-group">
-            <label for="filterType">Szűrés</label>
-            <select class="form-control" id="filterType" [(ngModel)]="selectedFilterType" name="filterType">
-              <option value="all">Mutasd mindet</option>
-              <option value="success">Csak a sikeres véradások</option>
-              <option value="place">Helyszín alapján</option>
-              <option value="donor">Véradó alapján</option>
-              <option value="date">Intervallumra</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-5 mb-1">
-          <div *ngIf="selectedFilterType === 'place'" class="form-group">
-            <label for="place">Helyszín</label>
-            <select class="form-control" id="place" name="place" [(ngModel)]="chosenCenterId">
-              <option *ngFor="let center of centers" [value]="center.id">{{ center.name }}</option>
-            </select>
-          </div>
-
-          <div *ngIf="selectedFilterType === 'donor'" class="form-group">
-            <label for="donor">Véradó</label>
-            <select class="form-control" id="donor" name="donor" [(ngModel)]="chosenDonorId">
-              <option *ngFor="let donor of donors" [value]="donor.id">{{donor.name}} ({{donor.socialSecurity}})</option>
-            </select>
-          </div>
-          <div *ngIf="selectedFilterType === 'date'" class="form-group">
-            <div class="row">
-              <div class="col-md-6">
-                <label for="startDate">Kezdő dátum</label>
-                <input type="date" class="form-control" id="startDate" name="startDate" [(ngModel)]="chosenInterval.startDate" required #startDateInput="ngModel">
-                <div *ngIf="startDateInput.invalid && (startDateInput.dirty || startDateInput.touched)" class="text-danger">Kötelező</div>
-              </div>
-              <div class="col-md-6">
-                <label for="endDate">Befejező dátum</label>
-                <input type="date" class="form-control" id="endDate" name="endDate" [(ngModel)]="chosenInterval.endDate" required #endDateInput="ngModel">
-                <div *ngIf="endDateInput.invalid && (endDateInput.dirty || endDateInput.touched)" class="text-danger">Kötelező</div>
-              </div>
-            </div>
-            <div *ngIf="chosenInterval.startDate && chosenInterval.endDate && chosenInterval.startDate > chosenInterval.endDate" class="text-danger">A kezdő dátum nem lehet későbbi a befejező dátumnál.</div>
-          </div>
-        </div>
-        <div class="col-md-2 form-group d-flex justify-content-end mb-1">
-          <button type="submit" class="btn btn-custom w-100 mt-4">Szűrés</button>
-        </div>
-      </div>
-    </form>
-  </div>
+  <app-donation-filter (donationsChangeEvent)="donations = $event"></app-donation-filter>
   <hr>
+  <div class="row" *ngIf="donations.length == 0">
+    <div class="col-md-12"><i>Nincs találat.</i></div>
+  </div>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
     <div class="col" *ngFor="let donation of donations">
       <div class="card h-100 text-light" [class.bg-danger]="!donation.eligible" [class.bg-success]="donation.eligible">

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DonorService } from '../service/donor.service';
 import { DonorDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
+import { formatDate, formatSocialSecurity } from '../helpers/helpers';
 
 @Component({
   selector: 'app-donor-list',
@@ -34,22 +35,11 @@ export class DonorListComponent {
     });
   }
 
-  formatSocialSecurity(socialSecurity: string) {
-    const groups = socialSecurity.match(/.{1,3}/g);
-    if (groups) {
-      return groups.join('-');
-    }
-    return socialSecurity;
+  formatDate(dateString: string) : string{
+    return formatDate(dateString);
   }
 
-  formatDate(dateString: string){
-    const parts = dateString.split('-');
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
-
-    const formattedDate = `${year}. ${month}. ${day}.`;
-
-    return formattedDate;
+  formatSocialSecurity(socialSecurity: string) : string{
+    return formatSocialSecurity(socialSecurity);
   }
 }

@@ -1,23 +1,27 @@
 <div class="container">
   <h2 class="mb-4 text-center">Véradók</h2>
-  <div class="row justify-content-center align-items-end" style="font-weight: bold;">
-    <div class="col-md-2">Név</div>
-    <div class="col-md-1">Nem</div>
-    <div class="col-md-3">Születési hely, idő</div>
-    <div class="col-md-3">Lakcím</div>
-    <div class="col-md-2">TAJ szám</div>
-    <div class="col-md-1">Állam&shy;polgárság</div>
-    <span class="border-bottom mt-2 mb-3"></span>
+  <div class="row" *ngIf="donors.length == 0">
+    <div class="col-md-12"><i>Nincs találat.</i></div>
   </div>
+  <div class="row" *ngIf="donors.length > 0">
+    <div class="row justify-content-center align-items-end" style="font-weight: bold;" *ngIf="donors.length > 0">
+      <div class="col-md-2">Név</div>
+      <div class="col-md-1">Nem</div>
+      <div class="col-md-3">Születési hely, idő</div>
+      <div class="col-md-3">Lakcím</div>
+      <div class="col-md-2">TAJ szám</div>
+      <div class="col-md-1">Állam&shy;polgárság</div>
+      <span class="border-bottom mt-2 mb-3"></span>
+    </div>
 
-  <div class="row p-1 hoverable align-items-center" *ngFor="let donor of donors">
-    <div class="col-md-2">{{donor.name}}</div>
-    <div class="col-md-1">{{donor.gender}}</div>
-    <div class="col-md-3">{{donor.birthPlace}}, {{formatDate(donor.birthDate)}}</div>
-    <div class="col-md-3">{{donor.address}}</div>
-    <div class="col-md-2">{{formatSocialSecurity(donor.socialSecurity)}}</div>
-    <div class="col-md-1">{{donor.citizenship}}</div>
-
+    <div class="row p-1 hoverable align-items-center" *ngFor="let donor of donors">
+      <div class="col-md-2">{{donor.name}}</div>
+      <div class="col-md-1">{{donor.gender}}</div>
+      <div class="col-md-3">{{donor.birthPlace}}, {{formatDate(donor.birthDate)}}</div>
+      <div class="col-md-3">{{donor.address}}</div>
+      <div class="col-md-2">{{formatSocialSecurity(donor.socialSecurity)}}</div>
+      <div class="col-md-1">{{donor.citizenship}}</div>
+    </div>
   </div>
 </div>
 
