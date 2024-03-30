@@ -39,3 +39,20 @@ export interface DonationDTO {
   directed: boolean;
   beneficiary: null | BeneficiaryDTO;
 }
+
+export interface UserDTO {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string | null;
+}
+
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+export interface AccessTokenDTO {
+  accessToken: string;
+}

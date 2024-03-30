@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6 card bg-light p-4 card-custom">
+        <h3 class="card-title text-center mb-4">Bejelentkezés</h3>
+        <div class="card-body">
+          <form [formGroup]="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">E-mail cím</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Jelszó</label>
+                <input type="password" class="form-control" id="password" formControlName="password">
+            </div>
+
+            <div class="text-center">
+                <div class="text-danger form-text mb-3" *ngIf="errorMessage">{{errorMessage}}</div>
+                <button class="btn btn-custom" (click)="login()">Bejelentkezés</button>
+            </div>
+        </form>
+        <div class="row mt-4">
+          <div class="col-md-12 text-center">
+            <span>Nincs fiókja? </span><a class="link-custom" href="/register">Regisztráció</a>
+          </div>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>

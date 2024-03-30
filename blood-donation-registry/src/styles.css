@@ -5,6 +5,11 @@ html{
   --lightColor: #fbfbfb;
   --hoverColor: #eac5d3;
 }
+html, body {
+  min-height: 100%;
+  height: auto;
+  margin: 0;
+}
 a {
   cursor: pointer;
 }
@@ -42,6 +47,25 @@ a {
   color: var(--mainColor);
 }
 
+.link-custom, .link-custom:active{
+  color: var(--mainColor);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link-custom:visited {
+  color: var(--darkColor);
+}
+
+.link-custom:hover{
+  color: var(--darkColor);
+  letter-spacing: 1pt;
+}
+
+.card-custom {
+  border-bottom: 10px solid var(--mainColor);
+}
+
 .hoverable:hover{
   background-color: var(--hoverColor);
 }
@@ -60,11 +84,11 @@ input[type="date"]::-webkit-clear-button {
 }
 
 .ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948; /* green */
+  border-left: 5px solid #42A948;
 }
 
 .ng-invalid:not(form)  {
-  border-left: 5px solid #a94442; /* red */
+  border-left: 5px solid #a94442;
 }
 
 

@@ -4,19 +4,19 @@
     <div class="col-md-12"><i>Nincs találat.</i></div>
   </div>
   <div class="row" *ngIf="centers.length > 0">
-    <div class="row" style="font-weight: bold; font-size: large;">
-      <div class="col-md-1">Id</div>
+    <div class="row justify-content-md-center" style="font-weight: bold; font-size: large;">
+      <div class="col-md-1" [class.col-md-3]="!authService.isLoggedIn()">Id</div>
       <div class="col-md-4">Név</div>
       <div class="col-md-5">Cím</div>
-      <div class="col-md-2">Módosít</div>
+      <div class="col-md-2" *ngIf="authService.isLoggedIn()">Módosít</div>
       <span class="border-bottom mt-2 mb-3"></span>
     </div>
 
-    <div class="row p-1" *ngFor="let center of centers">
-      <div class="col-md-1" [class.opacity-25]="!center.isActive">{{ center.institutionId }}</div>
+    <div class="row p-1 justify-content-md-center" *ngFor="let center of centers">
+      <div class="col-md-1" [class.opacity-25]="!center.isActive" [class.col-md-3]="!authService.isLoggedIn()">{{ center.institutionId }}</div>
       <div class="col-md-4" [class.opacity-25]="!center.isActive">{{ center.name }}</div>
       <div class="col-md-5" [class.opacity-25]="!center.isActive">{{ center.address }}</div>
-      <div class="col-md-2 d-flex justify-content-center">
+      <div class="col-md-2 d-flex justify-content-center" *ngIf="authService.isLoggedIn()">
         <button class="btn w-100" [class.btn-danger]="center.isActive" [class.btn-success]="!center.isActive"
         (click)="toggleActive(center)">{{ center.isActive ? 'Inaktivál' : 'Aktivál' }}</button>
       </div>

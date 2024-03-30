@@ -1,7 +1,8 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange, inject } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
 import { CommonModule } from '@angular/common';
 import { DonationCenterDTO } from '../models/dto';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-center-list',
@@ -14,6 +15,8 @@ export class CenterListComponent {
 
   @Input()
   changeCount !: number;
+
+  authService = inject(AuthService);
 
   centers : DonationCenterDTO[] = [];
 

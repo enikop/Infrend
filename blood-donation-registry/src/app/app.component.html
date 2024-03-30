@@ -12,10 +12,16 @@
         <a class="nav-link" [class.active]="activeRoute == '/donors'"  (click)="navigateTo('/donors')">Véradók</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [class.active]="activeRoute == '/donations'" (click)="navigateTo('/donations')">Véradások</a>
+        <a class="nav-link" [class.active]="activeRoute == '/donations' || activeRoute == '/'" (click)="navigateTo('/donations')">Véradások</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="authService.isLoggedIn()">
         <a class="nav-link" [class.active]="activeRoute == '/registerDonation'" (click)="navigateTo('/registerDonation')">Véradás felvétele</a>
+      </li>
+      <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+        <a class="nav-link" [class.active]="activeRoute == '/login'" (click)="navigateTo('/login')">Bejelentkezés</a>
+      </li>
+      <li class="nav-item" *ngIf="authService.isLoggedIn()">
+        <a class="nav-link" (click)="logout()">Kilépés</a>
       </li>
 
     </ul>

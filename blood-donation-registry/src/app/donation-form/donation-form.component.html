@@ -1,5 +1,5 @@
 <div class="container">
-  <h2 class="mb-3 mt-3 text-center">Új véradás felvétele</h2>
+  <h2 class="mb-3 mt-4 text-center">Új véradás felvétele</h2>
   <div class="row" *ngIf="!canCreateNew"><i>Nem vehető fel új véradás, hozzon létre legalább egy helyszínt és véradót.</i></div>
   <form *ngIf="canCreateNew"
   (ngSubmit)="saveDonation({general: [date, doctor], eligibleBound: [reason]})"
@@ -63,5 +63,5 @@
       <button type="submit" class="btn btn-custom">Mentés</button>
     </div>
   </form>
-  <app-beneficiary-form (beneficiaryChangeEvent)="loadBeneficiaries()" [hidden]="(!newDonation.directed || !newDonation.eligible) && newDonation.beneficiary"></app-beneficiary-form>
+  <app-beneficiary-form (beneficiaryChangeEvent)="loadBeneficiaries()"></app-beneficiary-form>
 </div>
