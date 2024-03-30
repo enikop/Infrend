@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
 import { DonationService } from '../service/donation.service';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { DonationFilterComponent } from '../donation-filter/donation-filter.comp
 })
 export class DonationListComponent {
 
+  @Input()
   donations: DonationDTO[] = [];
 
   constructor(

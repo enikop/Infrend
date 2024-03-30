@@ -1,0 +1,7 @@
+<div class="container">
+  <h2 class="mb-4 mt-4 text-center">Véradások</h2>
+  <app-donation-filter (donationsChangeEvent)="donations = $event"></app-donation-filter>
+  <hr>
+  <app-donation-list [donations] = "donations"></app-donation-list>
+</div>
+
