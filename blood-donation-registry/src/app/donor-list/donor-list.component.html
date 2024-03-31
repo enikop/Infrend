@@ -14,7 +14,7 @@
       <span class="border-bottom mt-2 mb-3"></span>
     </div>
 
-    <div class="row p-1 hoverable align-items-center" *ngFor="let donor of donors">
+    <div class="row mb-1 hoverable align-items-center" *ngFor="let donor of donors">
       <div class="col-md-2">{{donor.name}}</div>
       <div class="col-md-1">{{donor.gender}}</div>
       <div class="col-md-3">{{donor.birthPlace}}, {{formatDate(donor.birthDate)}}</div>
