@@ -37,7 +37,7 @@ export class DonorListComponent {
         this.donors = donors;
       },
       error: (err) => {
-        this.toastr.error('Véradók lekérdezése sikertelen.', 'Szerverhiba');
+        this.toastr.error('Véradók lekérdezése sikertelen.', 'Szerverhiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }

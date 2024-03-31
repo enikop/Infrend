@@ -34,10 +34,10 @@ export class LoginComponent {
       next: (response) => {
         this.authService.setToken(response.accessToken);
         this.router.navigateByUrl('/');
-        this.toastr.success("Most már végezhet módosítási műveletet is.", "Sikeres bejelentkezés");
+        this.toastr.success('Most már végezhet módosítási műveletet is.', 'Sikeres bejelentkezés', {toastClass: 'ngx-toastr toast-success'});
       },
       error: (err) => {
-        this.toastr.error("Hibás e-mail cím vagy jelszó.", "Sikertelen bejelentkezés");
+        this.toastr.error('Hibás e-mail cím vagy jelszó.', 'Sikertelen bejelentkezés', {toastClass: 'ngx-toastr toast-danger'});
         this.loginForm.reset();
       }
     });

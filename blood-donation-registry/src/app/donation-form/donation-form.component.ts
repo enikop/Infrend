@@ -62,7 +62,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -78,7 +78,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -92,7 +92,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('A betegek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A betegek betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -108,7 +108,7 @@ export class DonationFormComponent {
           this.newDonation.beneficiary = null;
         } else {
           //else, data cannot be saved
-          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
           return;
         }
       } else {
@@ -119,25 +119,25 @@ export class DonationFormComponent {
           this.newDonation.beneficiary = null;
         } else if (this.newDonation.beneficiary == null){
           //if there is no valid beneficiary while directed is set, data cannot be saved
-          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
           return;
         }
       }
       this.createDonation([...models.general, ...models.eligibleBound]);
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 
   createDonation(models: NgModel[]) {
     this.donationService.create(this.newDonation).subscribe({
       next: () => {
-        this.toastr.success('Véradás mentve.', 'Sikeres mentés');
+        this.toastr.success('Véradás mentve.', 'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
         this.resetForm(models);
       },
       error: (err) => {
         console.log(this.newDonation);
-        this.toastr.error('Szerverhiba.', 'Sikertelen mentés');
+        this.toastr.error('Szerverhiba.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
       }
     })
   }

@@ -38,13 +38,13 @@ export class RegisterComponent {
     saveUser(registerData: UserDTO){
       this.userService.create(registerData).subscribe({
         next: () => {
-          this.toastr.success('Most már bejelentkezhet.', 'Sikeres regisztráció');
+          this.toastr.success('Most már bejelentkezhet.', 'Sikeres regisztráció', {toastClass: 'ngx-toastr toast-success'});
           this.router.navigateByUrl('/login');
         },
         error: (err) => {
           var message = 'Szerverhiba';
           if(err.status == 422 ) message = 'Ez az e-mail cím már használatban van.';
-          this.toastr.error(message, 'Sikertelen regisztráció');
+          this.toastr.error(message, 'Sikertelen regisztráció', {toastClass: 'ngx-toastr toast-danger'});
         }
       });
     }
@@ -54,7 +54,7 @@ export class RegisterComponent {
       const registerData = this.registerForm.value as UserDTO;
       this.saveUser(registerData);
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen regisztráció');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen regisztráció', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 }

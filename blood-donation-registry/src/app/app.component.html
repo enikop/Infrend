@@ -4,7 +4,7 @@
     <span class="navbar-toggler-icon" ></span>
   </button>
   <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed" id="navbarNav" >
-    <ul class="navbar-nav">
+    <ul class="navbar-nav w-100">
       <li class="nav-item">
         <a class="nav-link" [class.active]="activeRoute == '/centers'"  (click)="navigateTo('/centers')">Helyszínek</a>
       </li>
@@ -17,13 +17,17 @@
       <li class="nav-item" *ngIf="authService.isLoggedIn()">
         <a class="nav-link" [class.active]="activeRoute == '/registerDonation'" (click)="navigateTo('/registerDonation')">Véradás felvétele</a>
       </li>
+    </ul>
+    <ul class="navbar-nav justify-content-end">
       <li class="nav-item" *ngIf="!authService.isLoggedIn()">
         <a class="nav-link" [class.active]="activeRoute == '/login'" (click)="navigateTo('/login')">Bejelentkezés</a>
+      </li>
+      <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+        <a class="nav-link" [class.active]="activeRoute == '/register'" (click)="navigateTo('/register')">Regisztráció</a>
       </li>
       <li class="nav-item" *ngIf="authService.isLoggedIn()">
         <a class="nav-link" (click)="logout()">Kilépés</a>
       </li>
-
     </ul>
   </div>
 </nav>

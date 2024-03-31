@@ -65,7 +65,8 @@ export class DonorFormComponent {
     if(this.isFormValid(models)) {
       this.donorService.create(this.newDonor).subscribe({
         next: () => {
-          this.toastr.success(`Új véradó elmentve: ${this.newDonor.name} (${formatSocialSecurity(this.newDonor.socialSecurity)})`, 'Sikeres mentés');
+          this.toastr.success(`Új véradó elmentve: ${this.newDonor.name} (${formatSocialSecurity(this.newDonor.socialSecurity)})`,
+          'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
           this.newDonor = this.defaultDonor();
           //Mark controls as untouched so that error messages don't appear instantly
           for(var model of models){
@@ -76,11 +77,11 @@ export class DonorFormComponent {
         error: (err) => {
           var message = 'Szerverhiba.';
           if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
-          this.toastr.error(message, 'Sikertelen mentés');
+          this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
         }
       });
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 

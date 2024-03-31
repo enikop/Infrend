@@ -37,7 +37,7 @@ export class CenterListComponent {
         this.centers = center;
       },
       error: (err) => {
-        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -47,7 +47,7 @@ export class CenterListComponent {
     this.donationCenterService.update(center).subscribe({
       error: () => {
         center.isActive = !center.isActive;
-        this.toastr.error('Nem sikerült az aktivitás módosítása (szerverhiba).', 'Hiba');
+        this.toastr.error('Nem sikerült az aktivitás módosítása (szerverhiba).', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }

@@ -52,7 +52,7 @@ export class DonationFilterComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -66,7 +66,7 @@ export class DonationFilterComponent {
         }
       },
       error: (err) => {
-        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -78,7 +78,7 @@ export class DonationFilterComponent {
         this.donationsChangeEvent.emit(this.donations);
       },
       error: (err) => {
-        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -90,7 +90,7 @@ export class DonationFilterComponent {
         this.donationsChangeEvent.emit(this.donations);
       },
       error: (err) => {
-        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
+        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
@@ -113,7 +113,7 @@ export class DonationFilterComponent {
         if(isIntervalValid(this.chosenInterval.startDate, this.chosenInterval.endDate)){
           this.loadFilteredDonations({startDate: this.chosenInterval.startDate, endDate: this.chosenInterval.endDate, eligible: true});
         } else {
-          this.toastr.error('Érvénytelen intervallumot adott meg.', 'Szűrés sikertelen');
+          this.toastr.error('Érvénytelen intervallumot adott meg.', 'Szűrés sikertelen', {toastClass: 'ngx-toastr toast-danger'});
         }
         break;
     }

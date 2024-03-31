@@ -37,6 +37,6 @@ export class AppComponent {
   logout() {
     this.authService.removeToken();
     this.router.navigateByUrl('/login');
-    this.toastr.success('Várjuk vissza!', 'Sikeres kijelentkezés');
+    this.toastr.success('Várjuk vissza!', 'Sikeres kijelentkezés', {toastClass: 'ngx-toastr toast-success'});
   }
 }

@@ -91,4 +91,8 @@ input[type="date"]::-webkit-clear-button {
   border-left: 5px solid #a94442;
 }
 
+.toast-danger, .toast-success {
+  border: none !important;
+  box-shadow: none !important;
+}
 

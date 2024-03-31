@@ -32,18 +32,19 @@ export class BeneficiaryFormComponent {
     if(this.isFormValid(models)){
       this.beneficiaryService.create(this.beneficiary).subscribe({
         next: () => {
-          this.toastr.success(`Beteg elmentve: ${this.beneficiary.name} (${formatSocialSecurity(this.beneficiary.socialSecurity)})`, 'Sikeres mentés');
+          this.toastr.success(`Beteg elmentve: ${this.beneficiary.name} (${formatSocialSecurity(this.beneficiary.socialSecurity)})`,
+           'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
           this.resetForm(models);
           this.beneficiaryChangeEvent.emit();
         },
         error: (err) => {
           var message = 'Szerverhiba.';
           if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
-          this.toastr.error(message, 'Sikertelen mentés');
+          this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
         }
       })
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 

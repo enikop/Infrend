@@ -33,7 +33,8 @@ export class CenterFormComponent {
     if(this.isFormValid(models)){
       this.donationCenterService.create(this.newCenter).subscribe({
         next: () => {
-          this.toastr.success(`Helyszín elmentve: ${this.newCenter.name} (${this.newCenter.institutionId})`, 'Sikeres mentés');
+          this.toastr.success(`Helyszín elmentve: ${this.newCenter.name} (${this.newCenter.institutionId})`,
+          'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
           this.newCenter = this.defaultCenter();
           //Mark controls as untouched so that error messages don't appear instantly
           for(var model of models){
@@ -44,11 +45,11 @@ export class CenterFormComponent {
         error: (err) => {
           var message = 'Szerverhiba.';
           if(err.status == 422 ) message = 'A megadott intézményi azonosító már szerepel az adatbázisban.';
-          this.toastr.error(message, 'Sikertelen mentés');
+          this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
         }
       });
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 
