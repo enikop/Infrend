@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { LoginDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -15,18 +16,16 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
 
-  errorMessage = "";
+  private toastr = inject(ToastrService);
+  private formBuilder = inject(FormBuilder);
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   loginForm = this.formBuilder.group({
     email: this.formBuilder.control(''),
     password: this.formBuilder.control('')
   });
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private authService: AuthService,
-    private router: Router) { }
 
   login() {
     const loginData = this.loginForm.value as LoginDTO;
@@ -35,9 +34,10 @@ export class LoginComponent {
       next: (response) => {
         this.authService.setToken(response.accessToken);
         this.router.navigateByUrl('/');
+        this.toastr.success("Most már végezhet módosítási műveletet is.", "Sikeres bejelentkezés");
       },
       error: (err) => {
-        this.errorMessage = "Hibás e-mail cím vagy jelszó."
+        this.toastr.error("Hibás e-mail cím vagy jelszó.", "Sikertelen bejelentkezés");
         this.loginForm.reset();
       }
     });

@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
-import { DonationService } from '../service/donation.service';
+import { DonationDTO } from '../models/dto';
 import { FormsModule } from '@angular/forms';
-import { DonorService } from '../service/donor.service';
-import { DonationCenterService } from '../service/donation-center.service';
-import { isIntervalValid, formatDate, formatSocialSecurity } from '../helpers/helpers';
+import { formatDate, formatSocialSecurity } from '../helpers/helpers';
 import { DonationFilterComponent } from '../donation-filter/donation-filter.component';
 
 @Component({
@@ -19,9 +16,6 @@ export class DonationListComponent {
 
   @Input()
   donations: DonationDTO[] = [];
-
-  constructor(
-    private donationService: DonationService) { }
 
 
   formatDate(dateString: string) : string{

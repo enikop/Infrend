@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BeneficiaryDTO, DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
 import { DonorService } from '../service/donor.service';
@@ -8,6 +8,7 @@ import { formatSocialSecurity } from '../helpers/helpers';
 import { DonationService } from '../service/donation.service';
 import { BeneficiaryService } from '../service/beneficiary.service';
 import { BeneficiaryFormComponent } from '../beneficiary-form/beneficiary-form.component';
+import { ToastrService } from 'ngx-toastr';
 
 interface BoundModels {
   general: NgModel[],
@@ -23,6 +24,12 @@ interface BoundModels {
 })
 export class DonationFormComponent {
 
+  private toastr = inject(ToastrService);
+  private donationService = inject(DonationService);
+  private beneficiaryService = inject(BeneficiaryService);
+  private donorService = inject(DonorService);
+  private donationCenterService = inject(DonationCenterService);
+
   canCreateNew : boolean = true;
   currentDate = formatDate(Date.now(), 'yyyy-MM-dd', 'en-US');
   donors: DonorDTO[] = [];
@@ -32,16 +39,10 @@ export class DonationFormComponent {
   newDonation: DonationDTO = this.defaultDonation();
 
   errorMessage = {
-    date: "A mai napot vagy annál korábbi dátumot adjon meg!",
-    doctor: "A doktor neve nem lehet üres.",
-    reason: "Sikertelen véradás esetén kötelező.",
+    date: 'A mai napot vagy annál korábbi dátumot adjon meg!',
+    doctor: 'A doktor neve nem lehet üres.',
+    reason: 'Sikertelen véradás esetén kötelező.',
   }
-
-  constructor(
-    private donationService: DonationService,
-    private beneficiaryService: BeneficiaryService,
-    private donorService: DonorService,
-    private donationCenterService: DonationCenterService) { }
 
   ngOnInit() {
     this.newDonation = this.defaultDonation();
@@ -61,7 +62,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -77,7 +78,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -91,7 +92,7 @@ export class DonationFormComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A betegek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -107,7 +108,7 @@ export class DonationFormComponent {
           this.newDonation.beneficiary = null;
         } else {
           //else, data cannot be saved
-          alert("Mentés sikertelen, hibás adatok.");
+          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
           return;
         }
       } else {
@@ -118,25 +119,25 @@ export class DonationFormComponent {
           this.newDonation.beneficiary = null;
         } else if (this.newDonation.beneficiary == null){
           //if there is no valid beneficiary while directed is set, data cannot be saved
-          alert("Mentés sikertelen, hibás adatok.");
+          this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
           return;
         }
       }
       this.createDonation([...models.general, ...models.eligibleBound]);
     } else {
-      alert("Mentés sikertelen, hibás adatok.");
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
     }
   }
 
   createDonation(models: NgModel[]) {
     this.donationService.create(this.newDonation).subscribe({
       next: () => {
+        this.toastr.success('Véradás mentve.', 'Sikeres mentés');
         this.resetForm(models);
-        alert("Sikeres művelet: véradás létrehozva.");
       },
       error: (err) => {
         console.log(this.newDonation);
-        alert("Sikertelen művelet: véradás nem létrehozva.");
+        this.toastr.error('Szerverhiba.', 'Sikertelen mentés');
       }
     })
   }
@@ -149,7 +150,7 @@ export class DonationFormComponent {
   }
 
   validateDate(dateModel: NgModel){
-    if(dateModel.value == ""){
+    if(dateModel.value == ''){
       dateModel.control.setErrors({ 'dateInvalid': true });
       return;
     }
@@ -177,7 +178,7 @@ export class DonationFormComponent {
       place: this.centers.length > 0 ? this.centers[0] : null,
       donor: this.donors.length > 0 ? this.donors[0] : null,
       date: formatDate(Date.now(), 'yyyy-MM-dd', 'en-US'),
-      doctor: "",
+      doctor: '',
       eligible: true,
       reason: null,
       directed: false,

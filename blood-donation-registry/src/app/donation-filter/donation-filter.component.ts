@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
 import { DonationService } from '../service/donation.service';
 import { FormsModule } from '@angular/forms';
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
 import { isIntervalValid, formatSocialSecurity } from '../helpers/helpers';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,6 +19,12 @@ import { isIntervalValid, formatSocialSecurity } from '../helpers/helpers';
 export class DonationFilterComponent {
   @Output()
   donationsChangeEvent = new EventEmitter<DonationDTO[]>();
+
+  private toastr = inject(ToastrService);
+  private donationService = inject(DonationService);
+  private donorService = inject(DonorService);
+  private donationCenterService = inject(DonationCenterService);
+
   donations: DonationDTO[] = [];
   donors: DonorDTO[] = [];
   centers: DonationCenterDTO[] = [];
@@ -29,11 +36,6 @@ export class DonationFilterComponent {
     startDate: '2024-01-01',
     endDate: '2024-01-01'
   }
-
-  constructor(
-    private donationService: DonationService,
-    private donorService: DonorService,
-    private donationCenterService: DonationCenterService) { }
 
   ngOnInit() {
     this.loadDonations();
@@ -50,7 +52,7 @@ export class DonationFilterComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -64,7 +66,7 @@ export class DonationFilterComponent {
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A véradók betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -76,7 +78,7 @@ export class DonationFilterComponent {
         this.donationsChangeEvent.emit(this.donations);
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -88,7 +90,7 @@ export class DonationFilterComponent {
         this.donationsChangeEvent.emit(this.donations);
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -102,16 +104,16 @@ export class DonationFilterComponent {
         this.loadFilteredDonations({ eligible: true });
         break;
       case 'place':
-        this.loadFilteredDonations({ eligible: true, "place.id": this.chosenCenterId });
+        this.loadFilteredDonations({ eligible: true, 'place.id': this.chosenCenterId });
         break;
       case 'donor':
-        this.loadFilteredDonations({ eligible: true, "donor.id": this.chosenDonorId});
+        this.loadFilteredDonations({ eligible: true, 'donor.id': this.chosenDonorId});
         break;
       case 'date':
         if(isIntervalValid(this.chosenInterval.startDate, this.chosenInterval.endDate)){
           this.loadFilteredDonations({startDate: this.chosenInterval.startDate, endDate: this.chosenInterval.endDate, eligible: true});
         } else {
-          alert("Hibás adatok.")
+          this.toastr.error('Érvénytelen intervallumot adott meg.', 'Szűrés sikertelen');
         }
         break;
     }

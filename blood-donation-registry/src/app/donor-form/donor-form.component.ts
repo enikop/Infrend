@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonorDTO, GENDER_OPTIONS } from '../models/dto';
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
 import { FormsModule, NgModel } from '@angular/forms';
-import { isSocialSecurityValid } from '../helpers/helpers';
+import { formatSocialSecurity, isSocialSecurityValid } from '../helpers/helpers';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-donor-form',
@@ -17,33 +18,35 @@ export class DonorFormComponent {
   @Output()
   donorChangeEvent= new EventEmitter<void>();
 
+  private toastr = inject(ToastrService);
+  private donorService = inject(DonorService);
+
   newDonor : DonorDTO = this.defaultDonor();
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
 
   errorMessage = {
-    name: "A név nem lehet üres.",
-    citizenship: "Az állampolgárság nem lehet üres.",
-    birthPlace: "A születési hely nem lehet üres.",
-    birthDate: "18 éves kor alatti személy nem vehető fel.",
-    address: "Érvényes címformátum (magyar vagy más): 1055 Budapest, Kossuth Lajos tér 1-3.",
-    socialSecurity: "A TAJ szám 9 jegyű szám, a jogszabályoknak megfelelő felépítésű (pl. 111111110, kötőjelek nélkül).",
+    name: 'A név nem lehet üres.',
+    citizenship: 'Az állampolgárság nem lehet üres.',
+    birthPlace: 'A születési hely nem lehet üres.',
+    birthDate: '18 éves kor alatti személy nem vehető fel.',
+    address: 'Érvényes címformátum (magyar vagy más): 1055 Budapest, Kossuth Lajos tér 1-3.',
+    socialSecurity: 'A TAJ szám 9 jegyű szám, a jogszabályoknak megfelelő felépítésű (pl. 111111110, kötőjelek nélkül).',
   };
 
   genderOptions = GENDER_OPTIONS;
 
-  constructor(private donorService: DonorService){  }
-
+  //TODO fix form and validation
   validateDate(dateModel: NgModel){
-    if(dateModel.value == ""){
+    if(dateModel.value == ''){
       dateModel.control.setErrors({ 'dateInvalid': true });
-      this.errorMessage.birthDate = "A születési dátum nem lehet üres.";
+      this.errorMessage.birthDate = 'A születési dátum nem lehet üres.';
       return;
     }
     const selectedDate: Date = new Date(dateModel.value);
     const currentDate: Date = new Date(this.maxDate);
     if (selectedDate > currentDate) {
       dateModel.control.setErrors({ 'dateInvalid': true });
-      this.errorMessage.birthDate = "18 éves kor alatti személy nem vehető fel.";
+      this.errorMessage.birthDate = '18 éves kor alatti személy nem vehető fel.';
     } else {
       dateModel.control.setErrors(null);
     }
@@ -62,6 +65,7 @@ export class DonorFormComponent {
     if(this.isFormValid(models)) {
       this.donorService.create(this.newDonor).subscribe({
         next: () => {
+          this.toastr.success(`Új véradó elmentve: ${this.newDonor.name} (${formatSocialSecurity(this.newDonor.socialSecurity)})`, 'Sikeres mentés');
           this.newDonor = this.defaultDonor();
           //Mark controls as untouched so that error messages don't appear instantly
           for(var model of models){
@@ -70,11 +74,13 @@ export class DonorFormComponent {
           this.donorChangeEvent.emit();
         },
         error: (err) => {
-          alert("Operation unsuccessful, invalid data.");
+          var message = 'Szerverhiba.';
+          if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
+          this.toastr.error(message, 'Sikertelen mentés');
         }
       });
     } else {
-      alert("Operation unsuccessful, invalid data.");
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
     }
   }
 
@@ -90,13 +96,13 @@ export class DonorFormComponent {
   defaultDonor(): DonorDTO {
     return {
       id: -1,
-      name: "",
+      name: '',
       gender: 'egyéb',
-      citizenship: "",
-      birthPlace: "",
-      birthDate: "2000-01-01",
-      address: "",
-      socialSecurity: "000000000",
+      citizenship: '',
+      birthPlace: '',
+      birthDate: '2000-01-01',
+      address: '',
+      socialSecurity: '000000000',
       donations: []
 
     }

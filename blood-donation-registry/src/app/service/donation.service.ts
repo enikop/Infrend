@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DonationDTO } from '../models/dto';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { DonationDTO } from '../models/dto';
 })
 export class DonationService {
 
-  constructor(private http: HttpClient) { }
+  http = inject(HttpClient);
 
   getAll() {
      return this.http.get<DonationDTO[]>('api/donation');

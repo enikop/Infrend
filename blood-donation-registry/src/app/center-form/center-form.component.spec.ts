@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CenterAddComponent } from './center-add.component';
+import { CenterFormComponent } from './center-form.component';
 
-describe('CenterAddComponent', () => {
-  let component: CenterAddComponent;
-  let fixture: ComponentFixture<CenterAddComponent>;
+describe('CenterFormComponent', () => {
+  let component: CenterFormComponent;
+  let fixture: ComponentFixture<CenterFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CenterAddComponent]
+      imports: [CenterFormComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CenterAddComponent);
+    fixture = TestBed.createComponent(CenterFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
 import { UserDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,13 +15,18 @@ import { CommonModule } from '@angular/common';
 })
 export class RegisterComponent {
 
+  private toastr = inject(ToastrService);
+  private formBuilder = inject(FormBuilder);
+  private userService = inject(UserService);
+  private router = inject(Router);
+
   private passwordPattern = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
 
   registerForm = this.formBuilder.group({
-    firstName: this.formBuilder.control(''),
-    lastName: this.formBuilder.control(''),
-    email: this.formBuilder.control('', [Validators.email]),
-    password: this.formBuilder.control('', [Validators.pattern(this.passwordPattern)])
+    firstName: this.formBuilder.control('', [Validators.required]),
+    lastName: this.formBuilder.control('', [Validators.required]),
+    email: this.formBuilder.control('', [Validators.required, Validators.email]),
+    password: this.formBuilder.control('', [Validators.required, Validators.pattern(this.passwordPattern)])
   });
 
   errorMessage = {
@@ -29,21 +35,16 @@ export class RegisterComponent {
     password: 'A jelszó legalább 8 karakter hosszú, kis-, nagybetűt és számot tartalmaz.',
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private router: Router) { }
-
     saveUser(registerData: UserDTO){
       this.userService.create(registerData).subscribe({
         next: () => {
-          alert("Sikeres regisztráció.");
-          this.registerForm.reset();
+          this.toastr.success('Most már bejelentkezhet.', 'Sikeres regisztráció');
           this.router.navigateByUrl('/login');
         },
         error: (err) => {
-          console.log(err);
-          alert('Hiba');
+          var message = 'Szerverhiba';
+          if(err.status == 422 ) message = 'Ez az e-mail cím már használatban van.';
+          this.toastr.error(message, 'Sikertelen regisztráció');
         }
       });
     }
@@ -53,7 +54,7 @@ export class RegisterComponent {
       const registerData = this.registerForm.value as UserDTO;
       this.saveUser(registerData);
     } else {
-      alert('Érvénytelen adatok, sikertelen regisztráció.');
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen regisztráció');
     }
   }
 }

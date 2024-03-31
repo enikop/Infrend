@@ -9,8 +9,6 @@ export class AuthService {
 
   router = inject(Router);
 
-  constructor() { }
-
   setToken(token: string) {
     localStorage.setItem(this.TOKEN_KEY, token);
   }

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { BeneficiaryDTO } from '../models/dto';
 import { formatSocialSecurity, isSocialSecurityValid } from '../helpers/helpers';
 import { BeneficiaryService } from '../service/beneficiary.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-beneficiary-form',
@@ -17,33 +18,32 @@ export class BeneficiaryFormComponent {
   @Output()
   beneficiaryChangeEvent = new EventEmitter<void>();
 
+  private toastr = inject(ToastrService);
+  private beneficiaryService = inject(BeneficiaryService);
+
   beneficiary: BeneficiaryDTO = this.defaultBeneficiary();
 
   errorMessage = {
-    beneficiaryName: "A név nem lehet üres.",
-    beneficiarySocialSec: "Érvénytelen formátum, helyesen: 111111110.",
+    beneficiaryName: 'A név nem lehet üres.',
+    beneficiarySocialSec: 'Érvénytelen formátum, helyesen: 111111110.',
   }
-
-  constructor(private beneficiaryService: BeneficiaryService) { }
 
   saveBeneficiary(models: NgModel[]){
     if(this.isFormValid(models)){
       this.beneficiaryService.create(this.beneficiary).subscribe({
         next: () => {
-          alert("Mentés sikeres.");
+          this.toastr.success(`Beteg elmentve: ${this.beneficiary.name} (${formatSocialSecurity(this.beneficiary.socialSecurity)})`, 'Sikeres mentés');
           this.resetForm(models);
           this.beneficiaryChangeEvent.emit();
         },
         error: (err) => {
-          if(err.status == 422){
-            alert("Duplikált tajszám, mentés sikertelen.");
-          } else {
-            alert("Szerverhiba, mentés sikertelen.");
-          }
+          var message = 'Szerverhiba.';
+          if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
+          this.toastr.error(message, 'Sikertelen mentés');
         }
       })
     } else {
-      alert("Hibás adatok, mentés sikertelen.");
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés');
     }
   }
 
@@ -66,8 +66,8 @@ export class BeneficiaryFormComponent {
   defaultBeneficiary() : BeneficiaryDTO {
     return {
       id: -1,
-      name: "",
-      socialSecurity: "000000000",
+      name: '',
+      socialSecurity: '000000000',
       donations: []
     }
   }

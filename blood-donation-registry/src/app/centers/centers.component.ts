@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CenterListComponent } from '../center-list/center-list.component';
-import { CenterAddComponent } from '../center-add/center-add.component';
+import { CenterFormComponent } from '../center-form/center-form.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-centers',
   standalone: true,
-  imports: [CenterListComponent, CenterAddComponent, CommonModule],
+  imports: [CenterListComponent, CenterFormComponent, CommonModule],
   templateUrl: './centers.component.html',
   styleUrl: './centers.component.css'
 })

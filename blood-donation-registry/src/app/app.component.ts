@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './service/auth.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,12 @@ export class AppComponent {
   title = 'blood-donation-registry';
   isMenuCollapsed = true;
   activeRoute: string = '';
-  authService = inject(AuthService);
 
-  constructor(private router: Router) {
+  authService = inject(AuthService);
+  private toastr = inject(ToastrService);
+  private router = inject(Router);
+
+  constructor() {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.activeRoute = e.url;
@@ -32,7 +36,7 @@ export class AppComponent {
 
   logout() {
     this.authService.removeToken();
-    this.router.navigateByUrl('/');
-    alert("Sikeresen kijelentkezett");
+    this.router.navigateByUrl('/login');
+    this.toastr.success('Várjuk vissza!', 'Sikeres kijelentkezés');
   }
 }

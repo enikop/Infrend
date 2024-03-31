@@ -6,21 +6,21 @@
           <form [formGroup]="registerForm">
             <div class="mb-2">
               <label for="lastName" class="form-label">Vezetéknév</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName" required>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName">
           </div>
           <div class="mb-2">
               <label for="firstName" class="form-label">Keresztnév</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName" required>
+              <input type="text" class="form-control" id="firstName" formControlName="firstName">
               <div class="text-danger form-text" *ngIf="(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) || (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) ">{{errorMessage.name}}</div>
           </div>
             <div class="mb-2">
                 <label for="email" class="form-label">E-mail cím</label>
-                <input type="email" class="form-control" id="email" formControlName="email" required>
+                <input type="email" class="form-control" id="email" formControlName="email" >
                 <div class="text-danger form-text" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched ">{{errorMessage.email}}</div>
             </div>
             <div>
                 <label for="password" class="form-label">Jelszó</label>
-                <input type="password" class="form-control" id="password" formControlName="password" required>
+                <input type="password" class="form-control" id="password" formControlName="password">
                 <div class="text-danger form-text" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched ">{{errorMessage.password}}</div>
 
             </div>

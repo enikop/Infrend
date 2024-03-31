@@ -88,7 +88,7 @@ export abstract class Controller {
             console.error(err);
         }
 
-        if(err.code == 'ER_DUP_ENTRY'){
+        if(err.code && err.code == 'ER_DUP_ENTRY'){
           //422 Unprocessable Entity
           res.status(422).json({ error: err.code })
         } else {

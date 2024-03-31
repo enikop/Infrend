@@ -3,6 +3,7 @@ import { DonationCenterService } from '../service/donation-center.service';
 import { CommonModule } from '@angular/common';
 import { DonationCenterDTO } from '../models/dto';
 import { AuthService } from '../service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-center-list',
@@ -17,16 +18,16 @@ export class CenterListComponent {
   changeCount !: number;
 
   authService = inject(AuthService);
+  private toastr = inject(ToastrService);
+  private donationCenterService = inject(DonationCenterService);
 
   centers : DonationCenterDTO[] = [];
-
-  constructor(private donationCenterService: DonationCenterService){  }
 
   ngOnInit(){
     this.loadCenters();
   }
 
-  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+  ngOnChanges() {
     this.loadCenters();
   }
 
@@ -36,7 +37,7 @@ export class CenterListComponent {
         this.centers = center;
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('A helyszínek betöltése sikertelen, töltse újra az oldalt!', 'Hiba');
       }
     });
   }
@@ -46,7 +47,7 @@ export class CenterListComponent {
     this.donationCenterService.update(center).subscribe({
       error: () => {
         center.isActive = !center.isActive;
-        alert("Hiba történt.");
+        this.toastr.error('Nem sikerült az aktivitás módosítása (szerverhiba).', 'Hiba');
       }
     });
   }

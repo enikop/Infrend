@@ -1,8 +1,9 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange, inject } from '@angular/core';
 import { DonorService } from '../service/donor.service';
 import { DonorDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
 import { formatDate, formatSocialSecurity } from '../helpers/helpers';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-donor-list',
@@ -16,15 +17,17 @@ export class DonorListComponent {
   @Input()
   changeCount!: number;
 
+  private toastr = inject(ToastrService);
+  private donorService = inject(DonorService);
+
   donors : DonorDTO[] = [];
 
-  constructor(private donorService: DonorService){  }
 
   ngOnInit(){
     this.loadDonors();
   }
 
-  ngOnChanges(changes: { [property: string]: SimpleChange }) {
+  ngOnChanges() {
     this.loadDonors();
   }
 
@@ -34,7 +37,7 @@ export class DonorListComponent {
         this.donors = donors;
       },
       error: (err) => {
-        console.log(err);
+        this.toastr.error('Véradók lekérdezése sikertelen.', 'Szerverhiba');
       }
     });
   }
