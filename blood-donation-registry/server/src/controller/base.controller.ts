@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 
 export abstract class Controller {

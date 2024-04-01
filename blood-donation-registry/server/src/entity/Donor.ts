@@ -1,7 +1,7 @@
-import { Validate } from "class-validator";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-import { SocialSecurityConstraint } from "../validator/SocialSecurityValidator";
-import { Donation } from "./Donation";
+import { Validate } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { SocialSecurityConstraint } from '../validator/SocialSecurityValidator';
+import { Donation } from './Donation';
 
 export enum Gender {
   Male = 'férfi',

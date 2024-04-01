@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-import { SocialSecurityConstraint } from "../validator/SocialSecurityValidator";
-import { Validate } from "class-validator";
-import { Donation } from "./Donation";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { SocialSecurityConstraint } from '../validator/SocialSecurityValidator';
+import { Validate } from 'class-validator';
+import { Donation } from './Donation';
 
 @Entity()
 export class Beneficiary {

@@ -1,29 +1,28 @@
-
-  <h2 class="mb-3 mt-3 text-center">Új beteg felvétele</h2>
-  <form (ngSubmit)="saveBeneficiary([beneficiaryName, socialSecurity])" #form="ngForm">
-    <div class="row">
-      <div class="col-md-8">
-        <div class="form-group mb-1">
-          <label for="beneficiaryName">Beteg neve</label>
-          <input type="text" class="form-control" id="beneficiaryName" name="beneficiaryName"
-            pattern="^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$" [(ngModel)]="beneficiary.name" #beneficiaryName="ngModel"
-            required>
-          <div class="text-danger form-text" *ngIf="beneficiaryName.invalid && beneficiaryName.touched">
-            {{errorMessage.beneficiaryName}}</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group mb-1">
-          <label for="socialSecurity">Beteg TAJ száma</label>
-          <input type="text" class="form-control" id="socialSecurity" name="socialSecurity" pattern="[0-9]{9}"
-            [(ngModel)]="beneficiary.socialSecurity" #socialSecurity="ngModel"
-            (ngModelChange)="validateSocialSecurity(socialSecurity)" required>
-          <div class="text-danger form-text" *ngIf="socialSecurity.invalid && socialSecurity.touched">
-            {{errorMessage.beneficiarySocialSec}}</div>
+<h2 class="mb-3 mt-3 text-center">Új beteg felvétele</h2>
+<form [formGroup]="beneficiaryForm">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group mb-1">
+        <label for="name">Név</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+        <div class="text-danger form-text"
+          *ngIf="beneficiaryForm.get('name')?.invalid && beneficiaryForm.get('name')?.touched">
+          {{errorMessage.name}}
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-end mt-2">
-      <button type="submit" class="btn btn-custom">Mentés</button>
+    <div class="col-md-4">
+      <div class="form-group mb-1">
+        <label for="socialSecurity">TAJ szám</label>
+        <input type="text" class="form-control" id="socialSecurity" formControlName="socialSecurity">
+        <div class="text-danger form-text"
+          *ngIf="beneficiaryForm.get('socialSecurity')?.invalid && beneficiaryForm.get('socialSecurity')?.touched ">
+          {{errorMessage.socialSecurity}}
+        </div>
+      </div>
     </div>
-  </form>
+  </div>
+  <div class="d-flex justify-content-end mt-2">
+    <button type="submit" class="btn btn-custom" (click)="saveBeneficiary()">Mentés</button>
+  </div>
+</form>

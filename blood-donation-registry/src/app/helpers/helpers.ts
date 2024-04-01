@@ -1,8 +1,16 @@
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
 export function isIntervalValid(start: string, end: string): boolean {
-  if(start == "" || end == "") return false;
+  if(start == '' || end == '') return false;
   const startDate = new Date(start);
   const endDate = new Date(end);
   return startDate <= endDate;
+}
+
+export function socialSecurityValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return isSocialSecurityValid(control.value) ? null : { socialSecurity: { value: control.value } };
+  };
 }
 
 export function isSocialSecurityValid(socialSecNumber: string): boolean {

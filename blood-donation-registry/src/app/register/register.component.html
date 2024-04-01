@@ -1,40 +1,45 @@
 <div class="container mt-4">
   <div class="row justify-content-md-center">
     <div class="col-md-6 card bg-light p-4 card-custom">
-        <h3 class="card-title text-center mb-3">Regisztráció</h3>
-        <div class="card-body">
-          <form [formGroup]="registerForm">
-            <div class="mb-2">
-              <label for="lastName" class="form-label">Vezetéknév</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName">
+      <h3 class="card-title text-center mb-3">Regisztráció</h3>
+      <div class="card-body">
+        <form [formGroup]="registerForm">
+          <div class="mb-2">
+            <label for="lastName" class="form-label">Vezetéknév</label>
+            <input type="text" class="form-control" id="lastName" formControlName="lastName">
           </div>
           <div class="mb-2">
-              <label for="firstName" class="form-label">Keresztnév</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName">
-              <div class="text-danger form-text" *ngIf="(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) || (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) ">{{errorMessage.name}}</div>
+            <label for="firstName" class="form-label">Keresztnév</label>
+            <input type="text" class="form-control" id="firstName" formControlName="firstName">
+            <div class="text-danger form-text"
+              *ngIf="(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) || (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) ">
+              {{errorMessage.name}}</div>
           </div>
-            <div class="mb-2">
-                <label for="email" class="form-label">E-mail cím</label>
-                <input type="email" class="form-control" id="email" formControlName="email" >
-                <div class="text-danger form-text" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched ">{{errorMessage.email}}</div>
+          <div class="mb-2">
+            <label for="email" class="form-label">E-mail cím</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+            <div class="text-danger form-text"
+              *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched ">{{errorMessage.email}}
             </div>
-            <div>
-                <label for="password" class="form-label">Jelszó</label>
-                <input type="password" class="form-control" id="password" formControlName="password">
-                <div class="text-danger form-text" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched ">{{errorMessage.password}}</div>
+          </div>
+          <div>
+            <label for="password" class="form-label">Jelszó</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+            <div class="text-danger form-text"
+              *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched ">
+              {{errorMessage.password}}</div>
 
-            </div>
-            <div class="text-center mt-3">
-                <button class="btn btn-custom" (click)="register()">Regisztráció</button>
-            </div>
+          </div>
+          <div class="text-center mt-3">
+            <button class="btn btn-custom" (click)="register()">Regisztráció</button>
+          </div>
         </form>
         <div class="row mt-2">
           <div class="col-md-12 text-center">
             <span>Már van fiókja? </span><a class="link-custom" href="/login">Bejelentkezés</a>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </div>
-

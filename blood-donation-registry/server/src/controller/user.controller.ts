@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { AppDataSource } from "../data-source";
-import { User } from "../entity/User";
-import { Controller } from "./base.controller";
+import { Request, Response } from 'express';
+import { AppDataSource } from '../data-source';
+import { User } from '../entity/User';
+import { Controller } from './base.controller';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 

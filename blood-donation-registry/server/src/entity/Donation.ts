@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
-import { Beneficiary } from "./Beneficiary";
-import { Donor } from "./Donor";
-import { DonationCenter } from "./DonationCenter";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { Beneficiary } from './Beneficiary';
+import { Donor } from './Donor';
+import { DonationCenter } from './DonationCenter';
 
 @Entity()
 export class Donation {
