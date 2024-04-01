@@ -2,14 +2,14 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonorDTO, GENDER_OPTIONS } from '../models/dto';
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
-import { FormsModule, NgModel } from '@angular/forms';
-import { formatSocialSecurity, isSocialSecurityValid } from '../helpers/helpers';
+import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { formatSocialSecurity, isSocialSecurityValid, maxDateValidator, socialSecurityValidator } from '../helpers/helpers';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-donor-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './donor-form.component.html',
   styleUrl: './donor-form.component.css'
 })
@@ -20,93 +20,62 @@ export class DonorFormComponent {
 
   private toastr = inject(ToastrService);
   private donorService = inject(DonorService);
+  private formBuilder = inject(FormBuilder);
 
-  newDonor : DonorDTO = this.defaultDonor();
+  private nameRegex = /^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$/;
+  private addressRegex = /^[0-9A-Z]+ [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/;
+
+  genderOptions = GENDER_OPTIONS;
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
 
+  donorForm = this.formBuilder.group({
+    name: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
+    gender: this.formBuilder.control('egyéb', [Validators.required]),
+    citizenship: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
+    birthPlace: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
+    birthDate: this.formBuilder.control('2000-01-01', [Validators.required, maxDateValidator(this.maxDate)]),
+    address: this.formBuilder.control('', [Validators.required, Validators.pattern(this.addressRegex)]),
+    socialSecurity: this.formBuilder.control('', [Validators.required, socialSecurityValidator()])
+  });
+
   errorMessage = {
-    name: 'A név nem lehet üres.',
-    citizenship: 'Az állampolgárság nem lehet üres.',
-    birthPlace: 'A születési hely nem lehet üres.',
-    birthDate: '18 éves kor alatti személy nem vehető fel.',
+    name: 'A név nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
+    citizenship: 'Az állampolgárság nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
+    birthPlace: 'A születési hely nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
+    birthDate: 'A születési dátumot kötelező megadni, 18 éves kor alatti személy nem vehető fel.',
     address: 'Érvényes címformátum (magyar vagy más): 1055 Budapest, Kossuth Lajos tér 1-3.',
     socialSecurity: 'A TAJ szám 9 jegyű szám, a jogszabályoknak megfelelő felépítésű (pl. 111111110, kötőjelek nélkül).',
   };
 
-  genderOptions = GENDER_OPTIONS;
-
-  //TODO fix form and validation
-  validateDate(dateModel: NgModel){
-    if(dateModel.value == ''){
-      dateModel.control.setErrors({ 'dateInvalid': true });
-      this.errorMessage.birthDate = 'A születési dátum nem lehet üres.';
-      return;
-    }
-    const selectedDate: Date = new Date(dateModel.value);
-    const currentDate: Date = new Date(this.maxDate);
-    if (selectedDate > currentDate) {
-      dateModel.control.setErrors({ 'dateInvalid': true });
-      this.errorMessage.birthDate = '18 éves kor alatti személy nem vehető fel.';
+  save() {
+    if(this.donorForm.valid) {
+      const donorData = { ...this.donorForm.value, ...{ id: -1, donations:[] } } as DonorDTO;
+      this.createDonor(donorData);
     } else {
-      dateModel.control.setErrors(null);
-    }
-  }
-
-  validateSocialSecurity(secModel: NgModel){
-    const socialSecNumber = secModel.value;
-    if(isSocialSecurityValid(socialSecNumber)){
-      secModel.control.setErrors(null);
-    } else {
-      secModel.control.setErrors({ 'socialsecurityInvalid': true });
-    }
-  }
-
-  saveDonor(models: NgModel[]){
-    if(this.isFormValid(models)) {
-      this.donorService.create(this.newDonor).subscribe({
-        next: () => {
-          this.toastr.success(`Új véradó elmentve: ${this.newDonor.name} (${formatSocialSecurity(this.newDonor.socialSecurity)})`,
-          'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
-          this.newDonor = this.defaultDonor();
-          //Mark controls as untouched so that error messages don't appear instantly
-          for(var model of models){
-            model.control.markAsUntouched();
-          }
-          this.donorChangeEvent.emit();
-        },
-        error: (err) => {
-          var message = 'Szerverhiba.';
-          if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
-          this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
-        }
-      });
-    } else {
+      if(this.donorForm.value.birthDate == '') {
+        this.errorMessage.birthDate = 'A születési dátumot kötelező megadni.';
+      }
+      else {
+        this.errorMessage.birthDate = '18 éves kor alatti személy nem vehető fel.';
+      }
       this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 
-  isFormValid(models: NgModel[]): boolean {
-    for(var model of models){
-      if(model.invalid){
-        return false;
+  createDonor(donor: DonorDTO) {
+    this.donorService.create(donor).subscribe({
+      next: () => {
+        this.toastr.success(`Új véradó elmentve: ${donor.name} (${formatSocialSecurity(donor.socialSecurity)})`,
+        'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
+        this.donorForm.reset({gender: 'egyéb', birthDate: '2000-01-01'});
+        this.donorChangeEvent.emit();
+      },
+      error: (err) => {
+        var message = 'Szerverhiba.';
+        if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
+        this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
       }
-    }
-    return true;
-  }
-
-  defaultDonor(): DonorDTO {
-    return {
-      id: -1,
-      name: '',
-      gender: 'egyéb',
-      citizenship: '',
-      birthPlace: '',
-      birthDate: '2000-01-01',
-      address: '',
-      socialSecurity: '000000000',
-      donations: []
-
-    }
+    });
   }
 
   getMaxBirthDate(): Date {

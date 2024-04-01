@@ -13,6 +13,25 @@ export function socialSecurityValidator(): ValidatorFn {
   };
 }
 
+export function maxDateValidator(maxDate: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return isDateBefore(maxDate, control.value) ? null : { maxDate: { value: control.value } };
+  };
+}
+
+function isDateBefore(maxDateStr: string, examinedDateStr:string): boolean {
+  if(examinedDateStr == ''){
+    return false;
+  }
+  const selectedDate: Date = new Date(examinedDateStr);
+  const maxDate: Date = new Date(maxDateStr);
+  if (selectedDate > maxDate) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 export function isSocialSecurityValid(socialSecNumber: string): boolean {
   //if empty or not containing 9 digits
   if (!socialSecNumber || !/^\d{9}$/.test(socialSecNumber)) {
