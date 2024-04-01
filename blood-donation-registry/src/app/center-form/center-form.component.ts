@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
 import { DonationCenterDTO } from '../models/dto';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-center-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './center-form.component.html',
   styleUrl: './center-form.component.css'
 })
@@ -19,8 +19,18 @@ export class CenterFormComponent {
 
   private toastr = inject(ToastrService);
   private donationCenterService = inject(DonationCenterService);
+  private formBuilder = inject(FormBuilder);
 
-  newCenter: DonationCenterDTO = this.defaultCenter();
+  institutionIdRegex = /^[0-9]{6}$/;
+  nameRegex = /^[0-9\wíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{1}[\s\SíéáöőüűóúÍÉÁÖŐÜÚÓŰ]{3,}/;
+  addressRegex=/^[0-9]{4} [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/;
+
+  centerForm = this.formBuilder.group({
+    institutionId: this.formBuilder.control('', [Validators.required, Validators.pattern(this.institutionIdRegex)]),
+    name: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
+    address: this.formBuilder.control('', [Validators.required, Validators.pattern(this.addressRegex)]),
+    isActive: this.formBuilder.control(true)
+  });
 
   errorMessage = {
     id: 'A szervezeti azonosító hatjegyű szám.',
@@ -28,48 +38,32 @@ export class CenterFormComponent {
     address: 'Érvényes címformátum (csak magyarországi): 1055 Budapest, Kossuth Lajos tér 1-3.'
   }
 
-
-  saveCenter(models: NgModel[]) {
-    if(this.isFormValid(models)){
-      this.donationCenterService.create(this.newCenter).subscribe({
-        next: () => {
-          this.toastr.success(`Helyszín elmentve: ${this.newCenter.name} (${this.newCenter.institutionId})`,
-          'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
-          this.newCenter = this.defaultCenter();
-          //Mark controls as untouched so that error messages don't appear instantly
-          for(var model of models){
-            model.control.markAsUntouched();
-          }
-          this.centerChangeEvent.emit();
-        },
-        error: (err) => {
-          var message = 'Szerverhiba.';
-          if(err.status == 422 ) message = 'A megadott intézményi azonosító már szerepel az adatbázisban.';
-          this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
-        }
-      });
+  //Save form data as new donation center
+  saveCenter() {
+    if(this.centerForm.valid){
+      const centerData = {...this.centerForm.value,...{id:-1, donations: []}} as DonationCenterDTO;
+      this.createCenter(centerData);
     } else {
       this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 
-  isFormValid(models: NgModel[]): boolean {
-    for(var model of models){
-      if(model.invalid){
-        return false;
+  //Create a new donation center, notify user of server error and violation of unique constraint
+  createCenter(center: DonationCenterDTO) {
+    this.donationCenterService.create(center).subscribe({
+      next: () => {
+        this.toastr.success(`Helyszín elmentve: ${center.name} (${center.institutionId})`,
+        'Sikeres mentés', {toastClass: 'ngx-toastr toast-success'});
+        //Reset form and signal to parent about data change
+        this.centerForm.reset();
+        this.centerChangeEvent.emit();
+      },
+      error: (err) => {
+        var message = 'Szerverhiba.';
+        //Special case: institutionId is not unique
+        if( err.status == 422 ) message = 'A megadott intézményi azonosító már szerepel az adatbázisban.';
+        this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
       }
-    }
-    return true;
-  }
-
-  defaultCenter() : DonationCenterDTO {
-    return {
-      id: -1,
-      institutionId: '',
-      name: '',
-      address: '',
-      isActive: true,
-      donations: []
-    }
+    });
   }
 }
