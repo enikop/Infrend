@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DonationFilterComponent } from '../donation-filter/donation-filter.component';
 import { DonationListComponent } from '../donation-list/donation-list.component';
-import { DonationDTO } from '../models/dto';
+import { DonationDTO } from '../models';
 
 @Component({
   selector: 'app-donations',

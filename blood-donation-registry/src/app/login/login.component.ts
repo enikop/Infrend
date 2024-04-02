@@ -3,7 +3,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
-import { LoginDTO } from '../models/dto';
+import { LoginDTO } from '../models';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 

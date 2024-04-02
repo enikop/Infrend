@@ -1,5 +1,8 @@
-export type GenderType = 'nő' | 'férfi' | 'egyéb';
-export const GENDER_OPTIONS: GenderType[] = ['nő', 'férfi', 'egyéb'];
+export enum Gender {
+  Female = 'nő',
+  Male = 'férfi',
+  Other = 'egyéb'
+}
 export interface DonationCenterDTO {
   id: number;
   institutionId: string;
@@ -12,7 +15,7 @@ export interface DonationCenterDTO {
 export interface DonorDTO {
   id: number;
   name: string;
-  gender: GenderType;
+  gender: Gender;
   citizenship: string;
   birthPlace: string;
   birthDate: string;

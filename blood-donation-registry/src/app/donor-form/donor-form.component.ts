@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { DonorDTO, GENDER_OPTIONS } from '../models/dto';
+import { DonorDTO,  Gender } from '../models/dto';
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ export class DonorFormComponent {
   private nameRegex = /^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$/;
   private addressRegex = /^[0-9A-Z]+ [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/;
 
-  genderOptions = GENDER_OPTIONS;
+  genderOptions = Object.values(Gender);
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
 
   donorForm = this.formBuilder.group({

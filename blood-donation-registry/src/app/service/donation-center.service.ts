@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { DonationCenterDTO } from '../models/dto';
+import { DonationCenterDTO } from '../models';
 
 @Injectable({
   providedIn: 'root'
