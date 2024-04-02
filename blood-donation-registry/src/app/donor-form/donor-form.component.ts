@@ -2,8 +2,9 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonorDTO, GENDER_OPTIONS } from '../models/dto';
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
-import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
-import { formatSocialSecurity, isSocialSecurityValid, maxDateValidator, socialSecurityValidator } from '../helpers/helpers';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { formatSocialSecurity } from '../helpers/formatters';
+import { maxDateValidator, socialSecurityValidator } from "../helpers/validators";
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

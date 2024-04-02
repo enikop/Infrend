@@ -1,56 +1,50 @@
 <div class="row">
-  <form (ngSubmit)="applyFilter()">
+  <form [formGroup]="filterForm">
     <div class="row align-items-start mb-2">
       <div class="col-md-5 mb-1">
         <div class="form-group">
-          <label for="filterType">Szűrés</label>
-          <select class="form-control" id="filterType" [(ngModel)]="selectedFilterType" name="filterType">
-            <option value="all">Mind</option>
-            <option value="success">Csak a sikeres véradások</option>
-            <option value="place">Helyszín alapján (csak sikeres)</option>
-            <option value="donor">Véradó alapján (csak sikeres)</option>
-            <option value="date">Intervallumra (csak sikeres)</option>
+          <label for="filterBy">Szűrés</label>
+          <select class="form-control" id="filterBy" formControlName="filterBy">
+            <option *ngFor="let opt of options" value="opt.name">{{ opt.description }}</option>
           </select>
         </div>
       </div>
       <div class="col-md-5 mb-1">
-        <div *ngIf="selectedFilterType == 'place'" class="form-group">
+        <div *ngIf="filterForm.value.filterBy == 'place'" class="form-group">
           <label for="place">Helyszín</label>
-          <select class="form-control" id="place" name="place" [(ngModel)]="chosenCenterId">
+          <select class="form-control" id="place" formControlName="placeId">
             <option *ngFor="let center of centers" [value]="center.id">{{ center.name }} ({{ center.institutionId }})</option>
           </select>
         </div>
 
-        <div *ngIf="selectedFilterType == 'donor'" class="form-group">
+        <div *ngIf="filterForm.value.filterBy == 'donor'" class="form-group">
           <label for="donor">Véradó</label>
-          <select class="form-control" id="donor" name="donor" [(ngModel)]="chosenDonorId">
+          <select class="form-control" id="donor" formControlName="donorId">
             <option *ngFor="let donor of donors" [value]="donor.id">{{ donor.name }} ({{ formatSocialSecurity(donor.socialSecurity) }})</option>
           </select>
         </div>
-        <div *ngIf="selectedFilterType == 'date'" class="form-group">
+        <div *ngIf="filterForm.value.filterBy == 'interval'" class="form-group">
           <div class="row">
             <div class="col-md-6">
               <label for="startDate">Kezdő dátum</label>
-              <input type="date" class="form-control" id="startDate" name="startDate"
-                [(ngModel)]="chosenInterval.startDate" required #startDateInput="ngModel">
-              <div *ngIf="startDateInput.invalid && startDateInput.dirty"
+              <input type="date" class="form-control" id="startDate" formControlName="startDate">
+              <div *ngIf="filterForm.get('startDate')?.invalid && filterForm.get('startDate')?.dirty"
                 class="text-danger">Kötelező</div>
             </div>
             <div class="col-md-6">
               <label for="endDate">Befejező dátum</label>
-              <input type="date" class="form-control" id="endDate" name="endDate" [(ngModel)]="chosenInterval.endDate"
-                required #endDateInput="ngModel">
-              <div *ngIf="endDateInput.invalid && endDateInput.dirty" class="text-danger">
+              <input type="date" class="form-control" id="endDate" formControlName="endDate" >
+              <div *ngIf="filterForm.get('endDate')?.invalid && filterForm.get('endDate')?.dirty" class="text-danger">
                 Kötelező</div>
             </div>
           </div>
           <div
-            *ngIf="chosenInterval.startDate && chosenInterval.endDate && chosenInterval.startDate > chosenInterval.endDate"
+            *ngIf="filterForm.errors && filterForm.errors['intervalInvalid']"
             class="text-danger">A kezdő dátum nem lehet későbbi a befejező dátumnál.</div>
         </div>
       </div>
       <div class="col-md-2 form-group d-flex justify-content-end mb-1">
-        <button type="submit" class="btn btn-custom w-100 mt-4">Szűrés</button>
+        <button type="submit" class="btn btn-custom w-100 mt-4" (click)="applyFilter()">Szűrés</button>
       </div>
     </div>
   </form>

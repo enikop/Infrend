@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DonorFormComponent } from '../helpers/helpers';
+import { DonorFormComponent } from '../helpers/formatters';
 
 describe('DonorFormComponent', () => {
   let component: DonorFormComponent;

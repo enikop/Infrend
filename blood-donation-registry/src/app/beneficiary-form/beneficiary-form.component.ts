@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, FormsModule,  ReactiveFormsModule, Validators } from '@angular/forms';
 import { BeneficiaryDTO } from '../models/dto';
-import { formatSocialSecurity, socialSecurityValidator } from '../helpers/helpers';
+import { formatSocialSecurity } from '../helpers/formatters';
+import { socialSecurityValidator } from "../helpers/validators";
 import { BeneficiaryService } from '../service/beneficiary.service';
 import { ToastrService } from 'ngx-toastr';
 

@@ -2,17 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
 import { DonationService } from '../service/donation.service';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
-import { isIntervalValid, formatSocialSecurity } from '../helpers/helpers';
+import { formatSocialSecurity } from '../helpers/formatters';
+import { isIntervalValid } from "../helpers/validators";
 import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
   selector: 'app-donation-filter',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './donation-filter.component.html',
   styleUrl: './donation-filter.component.css'
 })
@@ -24,18 +25,27 @@ export class DonationFilterComponent {
   private donationService = inject(DonationService);
   private donorService = inject(DonorService);
   private donationCenterService = inject(DonationCenterService);
+  private formBuilder = inject(FormBuilder);
+
+  options = [
+    {name: 'all', description: 'Mind'},
+    {name: 'success', description: 'Sikeres véradások'},
+    {name: 'place', description: 'Helyszín alapján (csak sikeres)'},
+    {name: 'donor', description: 'Véradó alapján (csak sikeres)'},
+    {name: 'interval', description: 'Intervallumra (csak sikeres)'},
+  ];
 
   donations: DonationDTO[] = [];
   donors: DonorDTO[] = [];
   centers: DonationCenterDTO[] = [];
-  selectedFilterType: string = 'all';
 
-  chosenDonorId!: number;
-  chosenCenterId!: number;
-  chosenInterval = {
-    startDate: '2024-01-01',
-    endDate: '2024-01-01'
-  }
+  filterForm = this.formBuilder.group({
+    filterBy: this.formBuilder.control(this.options[0].name, [Validators.required]),
+    placeId: this.formBuilder.control(0),
+    donorId: this.formBuilder.control(0),
+    startDate: this.formBuilder.control('2024-01-01'),
+    endDate: this.formBuilder.control('2024-01-01')
+  }, {validators: this.intervalValidator});
 
   ngOnInit() {
     this.loadFilteredDonations({});
@@ -48,7 +58,7 @@ export class DonationFilterComponent {
       next: (centers) => {
         this.centers = centers;
         if(this.centers.length > 0){
-          this.chosenCenterId = this.centers[0].id;
+          this.filterForm.get('placeId')?.setValue(this.centers[0].id);
         }
       },
       error: (err) => {
@@ -62,7 +72,7 @@ export class DonationFilterComponent {
       next: (donors) => {
         this.donors = donors;
         if(this.donors.length > 0){
-          this.chosenDonorId = this.donors[0].id;
+          this.filterForm.get('donorId')?.setValue(this.donors[0].id);
         }
       },
       error: (err) => {
@@ -84,7 +94,8 @@ export class DonationFilterComponent {
   }
 
   applyFilter() {
-    switch (this.selectedFilterType) {
+    const filterData = this.filterForm.value;
+    switch (filterData.filterBy) {
       case 'all':
         this.loadFilteredDonations({});
         break;
@@ -92,21 +103,40 @@ export class DonationFilterComponent {
         this.loadFilteredDonations({ eligible: true });
         break;
       case 'place':
-        this.loadFilteredDonations({ eligible: true, 'place.id': this.chosenCenterId });
+        this.loadFilteredDonations({ eligible: true, 'place.id': filterData.placeId });
         break;
       case 'donor':
-        this.loadFilteredDonations({ eligible: true, 'donor.id': this.chosenDonorId});
+        this.loadFilteredDonations({ eligible: true, 'donor.id': filterData.donorId});
         break;
-      case 'date':
-        if(isIntervalValid(this.chosenInterval.startDate, this.chosenInterval.endDate)){
-          this.loadFilteredDonations({startDate: this.chosenInterval.startDate, endDate: this.chosenInterval.endDate, eligible: true});
+      case 'interval':
+        if(this.filterForm.valid) {
+          this.loadFilteredDonations({startDate: filterData.startDate, endDate: filterData.endDate, eligible: true});
         } else {
           this.toastr.error('Érvénytelen intervallumot adott meg.', 'Szűrés sikertelen', {toastClass: 'ngx-toastr toast-danger'});
         }
         break;
     }
   }
+
   formatSocialSecurity(socialSecurity: string) : string{
     return formatSocialSecurity(socialSecurity);
+  }
+
+  intervalValidator(control: AbstractControl): ValidationErrors | null {
+    const filterBy = control.get('filterBy');
+    const start = control.get('startDate');
+    const end = control.get('endDate');
+    if(filterBy && filterBy.value == 'interval' && start && end){
+      if(start.value == '') {
+        start.setErrors({startInvalid: true});
+      }
+      if(end.value == '') {
+        end.setErrors({endInvalid: true});
+      }
+      if(start.value != '' && end.value != '' && !isIntervalValid(start.value, end.value)){
+        return { intervalInvalid: true };
+      }
+    }
+    return null;
   }
 }

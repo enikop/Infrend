@@ -4,7 +4,8 @@ import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } fr
 import { BeneficiaryDTO, DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
-import { donationFormValidator, formatSocialSecurity, maxDateValidator } from '../helpers/helpers';
+import { formatSocialSecurity } from '../helpers/formatters';
+import { donationFormValidator, maxDateValidator } from "../helpers/validators";
 import { DonationService } from '../service/donation.service';
 import { BeneficiaryService } from '../service/beneficiary.service';
 import { BeneficiaryFormComponent } from '../beneficiary-form/beneficiary-form.component';

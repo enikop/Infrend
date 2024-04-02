@@ -1,12 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-export function isIntervalValid(start: string, end: string): boolean {
-  if(start == '' || end == '') return false;
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-  return startDate <= endDate;
-}
-
 export function socialSecurityValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     return isSocialSecurityValid(control.value) ? null : { socialSecurity: { value: control.value } };
@@ -15,7 +8,7 @@ export function socialSecurityValidator(): ValidatorFn {
 
 export function maxDateValidator(maxDate: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    return isDateBefore(maxDate, control.value) ? null : { maxDate: { value: control.value } };
+    return isDateNotAfter(maxDate, control.value) ? null : { maxDate: { value: control.value } };
   };
 }
 
@@ -29,12 +22,18 @@ export function donationFormValidator(control: AbstractControl): ValidationError
       return { requiredIfNotEligible: true };
     }
   }
-
   return null;
 }
 
-function isDateBefore(maxDateStr: string, examinedDateStr:string): boolean {
-  if(examinedDateStr == ''){
+export function isIntervalValid(start: string, end: string): boolean {
+  if (start == '' || end == '') return false;
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  return startDate <= endDate;
+}
+
+function isDateNotAfter(maxDateStr: string, examinedDateStr: string): boolean {
+  if (examinedDateStr == '') {
     return false;
   }
   const selectedDate: Date = new Date(examinedDateStr);
@@ -45,8 +44,7 @@ function isDateBefore(maxDateStr: string, examinedDateStr:string): boolean {
     return true;
   }
 }
-
-export function isSocialSecurityValid(socialSecNumber: string): boolean {
+function isSocialSecurityValid(socialSecNumber: string): boolean {
   //if empty or not containing 9 digits
   if (!socialSecNumber || !/^\d{9}$/.test(socialSecNumber)) {
     return false;
@@ -58,28 +56,9 @@ export function isSocialSecurityValid(socialSecNumber: string): boolean {
 
   //calculate checksum
   var sum = 0;
-  for(var i = 0; i < digitArray.length - 1; i++){
+  for (var i = 0; i < digitArray.length - 1; i++) {
     const digit = parseInt(digitArray[i]);
     sum += i % 2 == 0 ? 3 * digit : 7 * digit;
   }
   return sum % 10 == checkDigit;
-}
-
-export function formatSocialSecurity(socialSecurity: string) {
-  const groups = socialSecurity.match(/.{1,3}/g);
-  if (groups) {
-    return groups.join('-');
-  }
-  return socialSecurity;
-}
-
-export function formatDate(dateString: string) {
-  const parts = dateString.split('-');
-  const year = parts[0];
-  const month = parts[1];
-  const day = parts[2];
-
-  const formattedDate = `${year}. ${month}. ${day}.`;
-
-  return formattedDate;
 }
