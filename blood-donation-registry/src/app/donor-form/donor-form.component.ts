@@ -39,9 +39,9 @@ export class DonorFormComponent {
   });
 
   errorMessage = {
-    name: 'A név nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
-    citizenship: 'Az állampolgárság nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
-    birthPlace: 'A születési hely nem lehet üres, tartalmazhat betűket szóközt és ,.\'- karaktereket.',
+    name: 'A név nem lehet üres, tartalmazhat latin betűket, szóközt és ,.\'- karaktereket.',
+    citizenship: 'Az állampolgárság nem lehet üres, tartalmazhat latin betűket, szóközt és ,.\'- karaktereket.',
+    birthPlace: 'A születési hely nem lehet üres, tartalmazhat latin betűket, szóközt és ,.\'- karaktereket.',
     birthDate: 'A születési dátumot kötelező megadni, 18 éves kor alatti személy nem vehető fel.',
     address: 'Érvényes címformátum (magyar vagy más): 1055 Budapest, Kossuth Lajos tér 1-3.',
     socialSecurity: 'A TAJ szám 9 jegyű szám, a jogszabályoknak megfelelő felépítésű (pl. 111111110, kötőjelek nélkül).',

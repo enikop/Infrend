@@ -19,6 +19,20 @@ export function maxDateValidator(maxDate: string): ValidatorFn {
   };
 }
 
+export function donationFormValidator(control: AbstractControl): ValidationErrors | null {
+  const eligible = control.get('eligible');
+  const reason = control.get('reason');
+
+  if (eligible && reason) {
+    if (eligible.value == false && !reason.value) {
+      reason.setErrors({ requiredIfNotEligible: true });
+      return { requiredIfNotEligible: true };
+    }
+  }
+
+  return null;
+}
+
 function isDateBefore(maxDateStr: string, examinedDateStr:string): boolean {
   if(examinedDateStr == ''){
     return false;

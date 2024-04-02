@@ -38,7 +38,7 @@ export class DonationFilterComponent {
   }
 
   ngOnInit() {
-    this.loadDonations();
+    this.loadFilteredDonations({});
     this.loadCenters();
     this.loadDonors();
   }
@@ -71,18 +71,6 @@ export class DonationFilterComponent {
     });
   }
 
-  loadDonations() {
-    this.donationService.getAll().subscribe({
-      next: (donations) => {
-        this.donations = donations;
-        this.donationsChangeEvent.emit(this.donations);
-      },
-      error: (err) => {
-        this.toastr.error('A véradások betöltése sikertelen, töltse újra az oldalt!', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
-      }
-    });
-  }
-
   loadFilteredDonations(json: any) {
     this.donationService.getAllFiltered(json).subscribe({
       next: (donations) => {
@@ -98,7 +86,7 @@ export class DonationFilterComponent {
   applyFilter() {
     switch (this.selectedFilterType) {
       case 'all':
-        this.loadDonations();
+        this.loadFilteredDonations({});
         break;
       case 'success':
         this.loadFilteredDonations({ eligible: true });

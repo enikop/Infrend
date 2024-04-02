@@ -6,20 +6,20 @@
         <div class="form-group mb-1">
           <label for="institutionId">Azonosító</label>
           <input type="text" class="form-control" id="institutionId" formControlName="institutionId">
-          <div class="text-danger form-text" *ngIf="centerForm.get('institutionId')?.invalid && centerForm.get('institutionId')?.touched">{{errorMessage.id}}</div>
+          <div class="text-danger form-text" *ngIf="centerForm.get('institutionId')?.invalid && centerForm.get('institutionId')?.dirty">{{errorMessage.id}}</div>
         </div>
       </div>
       <div class="col-md-8">
         <div class="form-group mb-1">
           <label for="name">Név</label>
           <input type="text" class="form-control" id="name" formControlName="name">
-          <div class="text-danger form-text" *ngIf="centerForm.get('name')?.invalid && centerForm.get('name')?.touched">{{errorMessage.name}}</div>
+          <div class="text-danger form-text" *ngIf="centerForm.get('name')?.invalid && centerForm.get('name')?.dirty">{{errorMessage.name}}</div>
         </div>
       </div>
       <div class="form-group mb-2">
         <label for="address">Cím</label>
         <input type="text" class="form-control" id="address" formControlName="address">
-        <div class="text-danger form-text" *ngIf="centerForm.get('address')?.invalid && centerForm.get('address')?.touched">{{errorMessage.address}}</div>
+        <div class="text-danger form-text" *ngIf="centerForm.get('address')?.invalid && centerForm.get('address')?.dirty">{{errorMessage.address}}</div>
       </div>
       <div class="row mb-2 align-items-center">
         <div class="col-md-6">

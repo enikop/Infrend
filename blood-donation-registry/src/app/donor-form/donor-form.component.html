@@ -4,7 +4,7 @@
     <div class="form-group mb-1">
       <label for="name">Név</label>
       <input type="text" class="form-control" id="name" formControlName="name">
-      <div class="text-danger form-text" *ngIf="donorForm.get('name')?.invalid && donorForm.get('name')?.touched">{{errorMessage.name}}</div>
+      <div class="text-danger form-text" *ngIf="donorForm.get('name')?.invalid && donorForm.get('name')?.dirty">{{errorMessage.name}}</div>
     </div>
     <div class="row mb-1">
       <div class="col-md-6">
@@ -19,21 +19,21 @@
         <div class="form-group">
           <label for="citizenship">Állampolgárság</label>
           <input type="text" class="form-control" id="citizenship" formControlName="citizenship">
-          <div class="text-danger form-text" *ngIf="donorForm.get('citizenship')?.invalid && donorForm.get('citizenship')?.touched">{{errorMessage.citizenship}}</div>
+          <div class="text-danger form-text" *ngIf="donorForm.get('citizenship')?.invalid && donorForm.get('citizenship')?.dirty">{{errorMessage.citizenship}}</div>
         </div>
       </div>
     </div>
     <div class="form-group mb-1">
       <label for="address">Lakcím</label>
       <input type="text" class="form-control" id="address" formControlName="address">
-      <div class="text-danger form-text" *ngIf="donorForm.get('address')?.invalid && donorForm.get('address')?.touched">{{errorMessage.address}}</div>
+      <div class="text-danger form-text" *ngIf="donorForm.get('address')?.invalid && donorForm.get('address')?.dirty">{{errorMessage.address}}</div>
     </div>
     <div class="row mb-1">
       <div class="col-md-6">
         <div class="form-group">
           <label for="birthPlace">Születési hely</label>
           <input type="text" class="form-control" id="birthPlace" formControlName="birthPlace">
-          <div class="text-danger form-text" *ngIf="donorForm.get('birthPlace')?.invalid && donorForm.get('birthPlace')?.touched">{{errorMessage.birthPlace}}</div>
+          <div class="text-danger form-text" *ngIf="donorForm.get('birthPlace')?.invalid && donorForm.get('birthPlace')?.dirty">{{errorMessage.birthPlace}}</div>
         </div>
       </div>
       <div class="col-md-6">
@@ -47,7 +47,7 @@
     <div class="form-group mb-3">
       <label for="socialSecurity">TAJ szám</label>
       <input type="text" class="form-control" id="socialSecurity" formControlName="socialSecurity">
-      <div class="text-danger form-text" *ngIf="donorForm.get('socialSecurity')?.invalid && donorForm.get('socialSecurity')?.touched">{{errorMessage.socialSecurity}}</div>
+      <div class="text-danger form-text" *ngIf="donorForm.get('socialSecurity')?.invalid && donorForm.get('socialSecurity')?.dirty">{{errorMessage.socialSecurity}}</div>
     </div>
     <div class="row mb-2 align-items-center">
       <div class="col-md-6"></div>
