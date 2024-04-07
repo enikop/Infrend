@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChange, inject } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
 import { CommonModule } from '@angular/common';
-import { DonationCenterDTO } from '../models';
+import { DonationCenterDTO } from '../models/dto';
 import { AuthService } from '../service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 

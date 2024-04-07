@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 export class UserController extends Controller {
     repository = AppDataSource.getRepository(User);
 
+    //Special create method with password encryption
     create = async (req: Request, res: Response) => {
         try {
             const entity = this.repository.create(req.body as object);
@@ -24,6 +25,8 @@ export class UserController extends Controller {
         }
     };
 
+    //Login method (by email and password), returns JWT token in case of success,
+    //401 Unauthorized if email or password are invalid
     login = async (req: Request, res: Response) => {
       try {
           const user = await this.repository.findOne({

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonationCenterService } from '../service/donation-center.service';
-import { DonationCenterDTO } from '../models';
+import { DonationCenterDTO } from '../models/dto';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';

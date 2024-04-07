@@ -5,7 +5,7 @@
         <div class="form-group">
           <label for="filterBy">Szűrés</label>
           <select class="form-control" id="filterBy" formControlName="filterBy">
-            <option *ngFor="let opt of options" value="opt.name">{{ opt.description }}</option>
+            <option *ngFor="let opt of options" value="{{ opt.name }}">{{ opt.description }}</option>
           </select>
         </div>
       </div>

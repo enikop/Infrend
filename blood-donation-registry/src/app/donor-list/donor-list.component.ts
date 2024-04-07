@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChange, inject } from '@angular/core';
 import { DonorService } from '../service/donor.service';
-import { DonorDTO } from '../models';
+import { DonorDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
 import { formatDate, formatSocialSecurity } from '../helpers/formatters';
 import { ToastrService } from 'ngx-toastr';

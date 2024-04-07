@@ -6,13 +6,19 @@ import { handleAuthorizationError } from './protect-routes';
 
 async function main() {
   try {
+    //DB connection
     await AppDataSource.initialize();
 
+    //Create express app
     const app = express();
 
+    //Middleware for parsing JSON request body
     app.use(express.json());
+
     //Booleans passed in query parameters don't get mistaken for strings
     app.use(boolParser());
+
+    //Use router from routes.ts
     app.use('/api', getRoutes(), handleAuthorizationError);
 
     app.listen(3000, () => {

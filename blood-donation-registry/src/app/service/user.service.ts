@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { AccessTokenDTO, LoginDTO, UserDTO } from '../models';
+import { AccessTokenDTO, LoginDTO, UserDTO } from '../models/dto';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

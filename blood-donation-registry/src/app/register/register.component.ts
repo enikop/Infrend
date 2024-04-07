@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
-import { UserDTO } from '../models';
+import { UserDTO } from '../models/dto';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
