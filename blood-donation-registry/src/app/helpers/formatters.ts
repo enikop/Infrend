@@ -1,4 +1,4 @@
-
+//000000000 to 000-000-000
 export function formatSocialSecurity(socialSecurity: string) {
   const groups = socialSecurity.match(/.{1,3}/g);
   if (groups) {
@@ -7,6 +7,7 @@ export function formatSocialSecurity(socialSecurity: string) {
   return socialSecurity;
 }
 
+//yyyy-MM-dd to yyyy. MM. dd.
 export function formatDate(dateString: string) {
   const parts = dateString.split('-');
   const year = parts[0];

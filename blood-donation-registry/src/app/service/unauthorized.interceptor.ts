@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { catchError, Observable } from 'rxjs';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { catchError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
+//If error arrives with status 401, delete token (expired) and redirect to login
 export const unauthorizedInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const authService = inject(AuthService);

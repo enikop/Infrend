@@ -1,17 +1,23 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
+//Validate social security no (TAJ)
+//For control
 export function socialSecurityValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     return isSocialSecurityValid(control.value) ? null : { socialSecurity: { value: control.value } };
   };
 }
 
+//Validate is given date is before or at maxDate
+//For control
 export function maxDateValidator(maxDate: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     return isDateNotAfter(maxDate, control.value) ? null : { maxDate: { value: control.value } };
   };
 }
 
+//Validate donation form: if donor is not eligible, there should be a reason, otherwise it is not necessary
+//For formgroup (multiple controls)
 export function donationFormValidator(control: AbstractControl): ValidationErrors | null {
   const eligible = control.get('eligible');
   const reason = control.get('reason');
@@ -60,5 +66,6 @@ function isSocialSecurityValid(socialSecNumber: string): boolean {
     const digit = parseInt(digitArray[i]);
     sum += i % 2 == 0 ? 3 * digit : 7 * digit;
   }
+
   return sum % 10 == checkDigit;
 }

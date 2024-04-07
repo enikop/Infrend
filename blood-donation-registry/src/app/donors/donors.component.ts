@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './donors.component.css'
 })
 export class DonorsComponent {
+
+  //Used to pass change events between child components
   changeCount = 0;
 
   authService = inject(AuthService);

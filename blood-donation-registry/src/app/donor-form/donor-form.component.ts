@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DonorFormComponent {
 
+  //To notify parent about changes in donors
   @Output()
   donorChangeEvent= new EventEmitter<void>();
 
@@ -24,7 +25,7 @@ export class DonorFormComponent {
   private formBuilder = inject(FormBuilder);
 
   private nameRegex = /^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$/;
-  private addressRegex = /^[0-9A-Z]+ [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/;
+  private addressRegex = /^[0-9A-Z]+ [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/; //international
 
   genderOptions = Object.values(Gender);
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
@@ -48,21 +49,24 @@ export class DonorFormComponent {
     socialSecurity: 'A TAJ szám 9 jegyű szám, a jogszabályoknak megfelelő felépítésű (pl. 111111110, kötőjelek nélkül).',
   };
 
-  save() {
+  //Get form data and save as new donor if valid
+  saveDonor() {
     if(this.donorForm.valid) {
+      //Add missing members, not necessary
       const donorData = { ...this.donorForm.value, ...{ id: -1, donations:[] } } as DonorDTO;
       this.createDonor(donorData);
     } else {
+      //Give the correct error message for date
       if(this.donorForm.value.birthDate == '') {
         this.errorMessage.birthDate = 'A születési dátumot kötelező megadni.';
-      }
-      else {
+      } else {
         this.errorMessage.birthDate = '18 éves kor alatti személy nem vehető fel.';
       }
       this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
     }
   }
 
+  //Create a new donor and notify parent about the change
   createDonor(donor: DonorDTO) {
     this.donorService.create(donor).subscribe({
       next: () => {
@@ -73,12 +77,14 @@ export class DonorFormComponent {
       },
       error: (err) => {
         var message = 'Szerverhiba.';
+        //If there has been a unique constraint error
         if(err.status == 422 ) message = 'A megadott TAJ szám már szerepel az adatbázisban.';
         this.toastr.error(message, 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
       }
     });
   }
 
+  //Calculate the maximum of birth date so that new donor is over 18 years at the moment
   getMaxBirthDate(): Date {
     const newDate = new Date();
     newDate.setFullYear(newDate.getFullYear() - 18);

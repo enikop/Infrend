@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BeneficiaryFormComponent {
 
+  //To signal to parent if there is a change in beneficiaries
   @Output()
   beneficiaryChangeEvent = new EventEmitter<void>();
 

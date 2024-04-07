@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DonorListComponent {
 
+  //To be able to react to changes of donors transferred by parent component
   @Input()
   changeCount!: number;
 
@@ -27,10 +28,12 @@ export class DonorListComponent {
     this.loadDonors();
   }
 
+  //React to change of changeCount -> reload donors
   ngOnChanges() {
     this.loadDonors();
   }
 
+  //Get all donors
   loadDonors(){
     this.donorService.getAll().subscribe({
       next: (donors) => {

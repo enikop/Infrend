@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CenterListComponent {
 
+  //To be able to react to changes of 'sibling' component (parent has a transfer role)
   @Input()
   changeCount !: number;
 
@@ -27,10 +28,12 @@ export class CenterListComponent {
     this.loadCenters();
   }
 
+  //React to changeCount change -> reload centers
   ngOnChanges() {
     this.loadCenters();
   }
 
+  //Get all centers
   loadCenters(){
     this.donationCenterService.getAll().subscribe({
       next: (center) => {
@@ -42,10 +45,12 @@ export class CenterListComponent {
     });
   }
 
+  //Change activity of a given center (update)
   toggleActive(center: DonationCenterDTO){
     center.isActive = !center.isActive;
     this.donationCenterService.update(center).subscribe({
       error: () => {
+        //If an error occured, change back
         center.isActive = !center.isActive;
         this.toastr.error('Nem sikerült az aktivitás módosítása (szerverhiba).', 'Hiba', {toastClass: 'ngx-toastr toast-danger'});
       }

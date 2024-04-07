@@ -13,10 +13,12 @@ import { AuthService } from '../service/auth.service';
 })
 export class CentersComponent {
 
+  //Transfer changes from one child to another with Output events and Input properties
   changeCount: number = 0;
 
   authService = inject(AuthService);
 
+  //Change handler
   increaseChangeCount() {
     this.changeCount++;
   }

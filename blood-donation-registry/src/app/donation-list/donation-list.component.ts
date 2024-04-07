@@ -14,9 +14,9 @@ import { DonationFilterComponent } from '../donation-filter/donation-filter.comp
 })
 export class DonationListComponent {
 
+  //Get donation list from parent
   @Input()
   donations: DonationDTO[] = [];
-
 
   formatDate(dateString: string) : string{
     return formatDate(dateString);

@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CenterFormComponent {
 
+  //To signal to parent if centers are changed
   @Output()
   centerChangeEvent = new EventEmitter<void>();
 

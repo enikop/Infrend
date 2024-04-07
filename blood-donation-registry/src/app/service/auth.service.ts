@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+
   private TOKEN_KEY = 'accessToken';
 
   router = inject(Router);
@@ -30,6 +31,7 @@ export class AuthService {
     const isLoggedIn = this.isLoggedIn();
 
     if (!isLoggedIn) {
+      //Redirect to login
       this.router.navigateByUrl('/login');
     }
 
@@ -41,6 +43,7 @@ export class AuthService {
     const isLoggedIn = this.isLoggedIn();
 
     if (isLoggedIn) {
+      //Redirect to route
       this.router.navigateByUrl('/');
     }
 

@@ -35,26 +35,30 @@ export class RegisterComponent {
     password: 'A jelszó legalább 8 karakter hosszú, kis-, nagybetűt és számot tartalmaz.',
   }
 
-    saveUser(registerData: UserDTO){
-      this.userService.create(registerData).subscribe({
-        next: () => {
-          this.toastr.success('Most már bejelentkezhet.', 'Sikeres regisztráció', {toastClass: 'ngx-toastr toast-success'});
-          this.router.navigateByUrl('/login');
-        },
-        error: (err) => {
-          var message = 'Szerverhiba';
-          if(err.status == 422 ) message = 'Ez az e-mail cím már használatban van.';
-          this.toastr.error(message, 'Sikertelen regisztráció', {toastClass: 'ngx-toastr toast-danger'});
-        }
-      });
-    }
+  //Attempt to save new user
+  saveUser(registerData: UserDTO) {
+    this.userService.create(registerData).subscribe({
+      next: () => {
+        this.toastr.success('Most már bejelentkezhet.', 'Sikeres regisztráció', { toastClass: 'ngx-toastr toast-success' });
+        //Redirect to login page
+        this.router.navigateByUrl('/login');
+      },
+      error: (err) => {
+        var message = 'Szerverhiba';
+        //If unique constraint is violated
+        if (err.status == 422) message = 'Ez az e-mail cím már használatban van.';
+        this.toastr.error(message, 'Sikertelen regisztráció', { toastClass: 'ngx-toastr toast-danger' });
+      }
+    });
+  }
 
+  //Get form data and initiate registration if valid
   register() {
     if (this.registerForm.valid) {
       const registerData = this.registerForm.value as UserDTO;
       this.saveUser(registerData);
     } else {
-      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen regisztráció', {toastClass: 'ngx-toastr toast-danger'});
+      this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen regisztráció', { toastClass: 'ngx-toastr toast-danger' });
     }
   }
 }

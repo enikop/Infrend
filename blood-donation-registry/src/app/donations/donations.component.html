@@ -1,7 +1,11 @@
 <div class="container">
   <h2 class="mb-4 mt-4 text-center">Véradások</h2>
-  <app-donation-filter (donationsChangeEvent)="donations = $event"></app-donation-filter>
-  <hr>
-  <app-donation-list [donations] = "donations"></app-donation-list>
+  <div class="row" *ngIf="donations && donations.length == 0">
+    <div class="col-md-12"><i>Nincsenek véradások.</i></div>
+  </div>
+  <div class="row" [hidden]="donations && donations.length == 0">
+    <app-donation-filter (donationsChangeEvent)="donations = $event"></app-donation-filter>
+    <hr>
+    <app-donation-list [donations]="donations"></app-donation-list>
+  </div>
 </div>
-

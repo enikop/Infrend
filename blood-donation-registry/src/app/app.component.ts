@@ -14,7 +14,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AppComponent {
   title = 'blood-donation-registry';
+
+  //Navbar toggle bool for small screen - menu open or not
   isMenuCollapsed = true;
+
+  //Current route for highlighting of menu item
   activeRoute: string = '';
 
   authService = inject(AuthService);
@@ -22,6 +26,7 @@ export class AppComponent {
   private router = inject(Router);
 
   constructor() {
+    //Subscribe to router events to always be aware of current url
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.activeRoute = e.url;
@@ -29,13 +34,16 @@ export class AppComponent {
     });
   }
 
+  //Menu item handler: Navigate to url and close menu (if closable)
   navigateTo(relativeUrl: string): void {
     this.router.navigateByUrl(relativeUrl);
     this.isMenuCollapsed = true;
   }
 
+  //Logout handler
   logout() {
     this.authService.removeToken();
+    //Redirect to login page
     this.router.navigateByUrl('/login');
     this.toastr.success('Várjuk vissza!', 'Sikeres kijelentkezés', {toastClass: 'ngx-toastr toast-success'});
   }

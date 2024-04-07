@@ -14,7 +14,7 @@ export class DonationCenterService {
   }
 
   getAllFilteredBy(json: any) {
-    return this.http.get<DonationCenterDTO[]>('api/donationCenter/filteredBy', { params: json});
+    return this.http.get<DonationCenterDTO[]>('api/donationCenter/filteredBy', { params: json });
   }
 
   getOne(id: number) {

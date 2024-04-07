@@ -27,12 +27,15 @@ export class LoginComponent {
     password: this.formBuilder.control('')
   });
 
+  //Read form data and attempt login
   login() {
     const loginData = this.loginForm.value as LoginDTO;
 
     this.userService.login(loginData).subscribe({
       next: (response) => {
+        //Store token
         this.authService.setToken(response.accessToken);
+        //Go to root path (login will be unavailable)
         this.router.navigateByUrl('/');
         this.toastr.success('Most már végezhet módosítási műveletet is.', 'Sikeres bejelentkezés', {toastClass: 'ngx-toastr toast-success'});
       },
