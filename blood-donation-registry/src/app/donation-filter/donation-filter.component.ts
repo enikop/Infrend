@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
+import { DonationCenterDTO, DonationDTO, DonorDTO } from "../../../models";
 import { DonationService } from '../service/donation.service';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { DonorService } from '../service/donor.service';

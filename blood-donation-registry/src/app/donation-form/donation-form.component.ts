@@ -1,7 +1,7 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BeneficiaryDTO, DonationCenterDTO, DonationDTO, DonorDTO } from '../models/dto';
+import { BeneficiaryDTO, DonationCenterDTO, DonationDTO, DonorDTO } from "../../../models";
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
 import { formatSocialSecurity } from '../helpers/formatters';

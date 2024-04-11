@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { DonorDTO,  Gender } from '../models/dto';
+import { DonorDTO, Gender } from "../../../models";
 import {CommonModule, formatDate} from '@angular/common';
 import { DonorService } from '../service/donor.service';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';

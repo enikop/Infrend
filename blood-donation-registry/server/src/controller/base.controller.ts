@@ -48,11 +48,11 @@ export abstract class Controller {
     create = async (req: Request, res: Response) => {
         try {
             const entity = this.repository.create(req.body as object);
-            entity.id = null;
+            delete entity.id;
 
-            const result = await this.repository.save(entity);
+            const entityInserted = await this.repository.save(entity);
 
-            res.json(result);
+            res.json(entityInserted);
         } catch (err) {
             this.handleError(res, err);
         }
@@ -61,17 +61,17 @@ export abstract class Controller {
     //Update the entity specified in request body, if it already exists (otherwise response 404)
     update = async (req: Request, res: Response) => {
         try {
-            let entityToUpdate = await this.repository.findOneBy({
-                id: req.body.id
+            const entity = this.repository.create(req.body as object);
+            const entityToUpdate = await this.repository.findOneBy({
+                id: entity.id
             });
-            if (!entityToUpdate || !req.body.id) {
+
+            if (!entityToUpdate || !entity.id) {
                 return this.handleError(res, null, 404, 'No entity found with this id.');
             }
 
-            entityToUpdate = this.repository.create(req.body as object);
-            const result = await this.repository.save(entityToUpdate);
-
-            res.json(result);
+            await this.repository.save(entity);
+            res.json(entity);
         } catch (err) {
             this.handleError(res, err);
         }
@@ -80,8 +80,9 @@ export abstract class Controller {
     //Delete the entity with the id specified as part of the request route, if it already exists (otherwise response 404)
     delete = async (req: Request, res: Response) => {
         try {
+            const id = req.params.id;
             const entityToDelete = await this.repository.findOneBy({
-                id: req.params.id
+                id: id
             });
 
             if (!entityToDelete) {
@@ -89,7 +90,7 @@ export abstract class Controller {
             }
 
             await this.repository.remove(entityToDelete);
-            res.status(200).send();
+            res.send();
         } catch (err) {
             this.handleError(res, err);
         }

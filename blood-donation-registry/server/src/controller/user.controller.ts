@@ -12,7 +12,7 @@ export class UserController extends Controller {
     create = async (req: Request, res: Response) => {
         try {
             const entity = this.repository.create(req.body as object);
-            entity.id = null;
+            delete entity.id;
 
             entity.password = await bcrypt.hash(entity.password, 12);
 

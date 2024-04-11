@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { Donation } from './Donation';
-import {Gender} from '../../../src/app/models/dto'
+import { Gender } from "../../../models";
 
 @Entity()
 export class Donor {

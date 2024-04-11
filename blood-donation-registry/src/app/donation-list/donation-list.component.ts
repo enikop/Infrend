@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { DonationDTO } from '../models/dto';
+import { DonationDTO } from "../../../models";
 import { FormsModule } from '@angular/forms';
 import { formatDate, formatSocialSecurity } from '../helpers/formatters';
 import { DonationFilterComponent } from '../donation-filter/donation-filter.component';

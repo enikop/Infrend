@@ -36,7 +36,7 @@ export function getRoutes(){
   router.get('/donation/filteredBy', donationController.getAllFiltered);
   router.get('/donation/:id', donationController.getOne);
   router.post('/donation', checkUser, donationController.create);
-  //router.put('/donation', checkUser, donationController.update);
+  router.put('/donation', checkUser, donationController.update);
   //router.delete('/donation/:id', checkUser, donationController.delete);
 
   router.get('/beneficiary', beneficiaryController.getAll);
