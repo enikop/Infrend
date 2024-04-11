@@ -1,4 +1,5 @@
-<div class="row">
+<!--Filtering only available if there are centers and donors (otherwise there can be no donations)-->
+<div class="row" *ngIf="centers.length > 0 && donors.length > 0">
   <form [formGroup]="filterForm">
     <div class="row align-items-start mb-2">
       <div class="col-md-5 mb-1">

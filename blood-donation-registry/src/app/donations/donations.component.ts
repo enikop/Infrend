@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { DonationFilterComponent } from '../donation-filter/donation-filter.component';
 import { DonationListComponent } from '../donation-list/donation-list.component';
 import { DonationDTO } from "../../../models";
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-donations',
   standalone: true,
-  imports: [DonationFilterComponent, DonationListComponent, CommonModule],
+  imports: [DonationFilterComponent, DonationListComponent],
   templateUrl: './donations.component.html',
   styleUrl: './donations.component.css'
 })
