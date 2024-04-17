@@ -6,24 +6,24 @@
   <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed" id="navbarNav" >
     <ul class="navbar-nav w-100">
       <li class="nav-item">
-        <a class="nav-link" [class.active]="activeRoute == '/centers'"  (click)="navigateTo('/centers')">Helyszínek</a>
+        <a class="nav-link" [class.active]="isActiveRoute('centers')"  routerLink="/centers">Helyszínek</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [class.active]="activeRoute == '/donors'"  (click)="navigateTo('/donors')">Véradók</a>
+        <a class="nav-link" [class.active]="isActiveRoute('donors')"  routerLink="/donors">Véradók</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [class.active]="activeRoute == '/donations' || activeRoute == '/'" (click)="navigateTo('/donations')">Véradások</a>
+        <a class="nav-link" [class.active]="isActiveRoute('donations') || isActiveRoute('')" routerLink="/donations">Véradások</a>
       </li>
       <li class="nav-item" *ngIf="authService.isLoggedIn()">
-        <a class="nav-link" [class.active]="activeRoute == '/registerDonation'" (click)="navigateTo('/registerDonation')">Véradás felvétele</a>
+        <a class="nav-link" [class.active]="isActiveRoute('registerDonation')" routerLink="/registerDonation">Véradás felvétele</a>
       </li>
     </ul>
     <ul class="navbar-nav justify-content-end">
       <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-        <a class="nav-link" [class.active]="activeRoute == '/login'" (click)="navigateTo('/login')">Bejelentkezés</a>
+        <a class="nav-link" [class.active]="isActiveRoute('login')" routerLink="/login">Bejelentkezés</a>
       </li>
       <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-        <a class="nav-link" [class.active]="activeRoute == '/register'" (click)="navigateTo('/register')">Regisztráció</a>
+        <a class="nav-link" [class.active]="isActiveRoute('register')" routerLink="/register">Regisztráció</a>
       </li>
       <li class="nav-item" *ngIf="authService.isLoggedIn()">
         <a class="nav-link" (click)="logout()">Kilépés</a>

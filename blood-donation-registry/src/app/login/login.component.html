@@ -6,11 +6,11 @@
           <form [formGroup]="loginForm">
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail cím</label>
-                <input type="email" class="form-control" id="email" formControlName="email">
+                <input type="email" class="form-control" id="email" autocomplete="on" formControlName="email">
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">Jelszó</label>
-                <input type="password" class="form-control" id="password" formControlName="password">
+                <input type="password" class="form-control" id="password" autocomplete="on" formControlName="password">
             </div>
 
             <div class="text-center">

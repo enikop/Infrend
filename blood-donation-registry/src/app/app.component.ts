@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './service/auth.service';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgbCollapseModule, CommonModule],
+  imports: [RouterOutlet, RouterLink, NgbCollapseModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,26 +18,24 @@ export class AppComponent {
   //Navbar toggle bool for small screen - menu open or not
   isMenuCollapsed = true;
 
-  //Current route for highlighting of menu item
-  activeRoute: string = '';
-
   authService = inject(AuthService);
   private toastr = inject(ToastrService);
   private router = inject(Router);
 
-  constructor() {
-    //Subscribe to router events to always be aware of current url
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.activeRoute = e.url;
-      }
-    });
-  }
+  //For highlighting menu item
+  activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
-  //Menu item handler: Navigate to url and close menu (if closable)
-  navigateTo(relativeUrl: string): void {
-    this.router.navigateByUrl(relativeUrl);
-    this.isMenuCollapsed = true;
+  //Check if given route is active
+  isActiveRoute(route: string): boolean {
+    if(this.activatedRoute.snapshot.firstChild?.url.length == 0){
+      if(route == '') return true;
+      else return false;
+    }
+    if(this.activatedRoute.snapshot.firstChild &&
+    this.activatedRoute.snapshot.firstChild.url[0].toString() == route) {
+      return true;
+    }
+    return false;
   }
 
   //Logout handler
