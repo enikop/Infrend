@@ -11,14 +11,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.3.3",
-    "@angular/common": "^17.3.3",
-    "@angular/compiler": "^17.3.3",
-    "@angular/core": "^17.3.3",
-    "@angular/forms": "^17.3.3",
-    "@angular/platform-browser": "^17.3.3",
-    "@angular/platform-browser-dynamic": "^17.3.3",
-    "@angular/router": "^17.3.3",
+    "@angular/animations": "^17.3.4",
+    "@angular/common": "^17.3.4",
+    "@angular/compiler": "^17.3.4",
+    "@angular/core": "^17.3.4",
+    "@angular/forms": "^17.3.4",
+    "@angular/platform-browser": "^17.3.4",
+    "@angular/platform-browser-dynamic": "^17.3.4",
+    "@angular/router": "^17.3.4",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
     "bcrypt": "^5.1.1",
@@ -36,14 +36,14 @@
     "zone.js": "~0.14.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.3",
-    "@angular/cli": "^17.3.3",
-    "@angular/compiler-cli": "^17.3.3",
-    "@angular/localize": "^17.3.3",
+    "@angular-devkit/build-angular": "^17.3.5",
+    "@angular/cli": "^17.3.5",
+    "@angular/compiler-cli": "^17.3.4",
+    "@angular/localize": "^17.3.4",
     "@types/bcrypt": "^5.0.2",
     "@types/jasmine": "~5.1.4",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.12.5",
+    "@types/node": "^20.12.7",
     "jasmine-core": "~5.1.2",
     "karma": "~6.4.3",
     "karma-chrome-launcher": "~3.2.0",
@@ -51,6 +51,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ts-node": "10.9.2",
-    "typescript": "~5.4.4"
+    "typescript": "~5.4.5"
   }
 }

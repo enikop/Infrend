@@ -1,0 +1,63 @@
+DELETE FROM donation;
+DELETE FROM donation_center;
+DELETE FROM donor;
+DELETE FROM beneficiary;
+
+ALTER TABLE donor AUTO_INCREMENT = 1;
+ALTER TABLE donation AUTO_INCREMENT = 1;
+ALTER TABLE donation_center AUTO_INCREMENT = 1;
+ALTER TABLE beneficiary AUTO_INCREMENT = 1;
+
+INSERT INTO DONOR (NAME, GENDER, CITIZENSHIP, BIRTHPLACE, BIRTHDATE, ADDRESS, SOCIALSECURITY)
+VALUES 
+('Kiss Kálmán', 'férfi', 'magyar', 'Miskolc', '1997-10-12', '3530 Miskolc, Fű utca 2', '111111110' ),
+('Horváth Dániel', 'férfi', 'magyar', 'Székesfehérvár', '1980-08-17', '8000 Székesfehérvár, Fő utca 5', '888888880'),
+('Kiss Anna', 'nő', 'magyar', 'Miskolc', '1977-04-25', '3300 Eger, Dobó tér 10', '999999990'),
+('Takács László', 'férfi', 'magyar', 'Budapest', '1974-01-10', '6000 Kecskemét, Kossuth tér 1', '101010102'),
+('Szűcs Éva', 'nő', 'magyar', 'Nyíregyháza', '1971-06-03', '4400 Nyíregyháza, Kossuth tér 2', '121212128'),
+('Papp János', 'férfi', 'magyar', 'Nagykanizsa', '1968-09-20', '8200 Veszprém, Óváros tér 1', '131313136'),
+('Nagy Edit', 'nő', 'magyar', 'Budapest', '1990-05-15', '1011 Budapest, Krisztina krt. 39', '222222220'),
+('Kovács Péter', 'férfi', 'magyar', 'Debrecen', '1988-07-03', '4026 Debrecen, Piac utca 20', '333333330'),
+('Tóth Andrea', 'nő', 'magyar', 'Szeged', '1985-12-20', '6720 Szeged, Dugonics tér 13', '444444440'),
+('Kovács János', 'férfi', 'magyar', 'Szombathely', '1982-03-25', '9700 Szombathely, Kossuth Lajos utca 4', '555555550'),
+('Molnár Ágnes', 'nő', 'magyar', 'Győr', '1979-09-08', '7621 Pécs, Szent István tér 7', '666666660'),
+('Szabó Gábor', 'férfi', 'magyar', 'Szolnok', '1976-11-30', '9021 Győr, Árpád út 26', '777777770'),
+('Németh Eszter', 'nő', 'magyar', 'Szeged', '1995-03-18', '6720 Szeged, Kálvária sugárút 23', '100000003'),
+('Varga Balázs', 'férfi', 'magyar', 'Debrecen', '1984-12-05', '4026 Debrecen, Piac utca 10', '001000003'),
+('Kovács Ágnes', 'nő', 'magyar', 'Pécs', '1981-07-22', '7621 Pécs, Szent István tér 12', '000010003'),
+('Farkas István', 'férfi', 'magyar', 'Budapest', '1973-10-09', '1011 Budapest, Budavári palota', '000000103'),
+('Tóth Amarillisz', 'egyéb', 'magyar', 'Szombathely', '1990-05-27', '9700 Szombathely, Rákóczi út 3', '101000006'),
+('Nagy Orsolya', 'nő', 'magyar', 'Nyíregyháza', '1987-02-14', '4400 Nyíregyháza, Kossuth tér 5', '100010006'),
+('Simon Viktória', 'nő', 'magyar', 'Győr', '1978-04-17', '9021 Győr, Árpád út 34', '001010006'),
+('Kiss Villő', 'egyéb', 'magyar', 'Miskolc', '2003-09-30', '3530 Miskolc, Rákóczi út 8', '100000106');
+
+INSERT INTO DONATION_CENTER (institutionId, name, address, isactive)
+values ('123456','Megyei Kórház', '3520 Miskolc, Réz utca 13', 1),
+('123457','Kispesti Vöröskereszt', '1004 Budapest, Gyalu út 123', 1),
+('123458','Röcsögei Rendelő', '2451 Mucsaröcsöge, Fő út 1', 1),
+('123459','Pártház Rendelő', '3110 Alsajó, Kossuth tér 8', 0),
+('234560', 'Menedékház', '3300 Eger, Fő tér 5', 1),
+('234561', 'Wellness Központ', '4400 Nyíregyháza, Kossuth tér 7', 1),
+('234562', 'Semmelweis Klinika', '8000 Székesfehérvár, Ady Endre út 12', 1),
+('234563', 'Belvárosi Klinika', '1004 Budapest, Munkácsy út 15', 0),
+('234564', 'Kastély Rendelő és Fogászat', '2100 Gödöllő, Kossuth tér 3', 1),
+('234565', 'Holisztikus Egészség Központ', '6720 Szeged, Gutenberg tér 10', 1);
+
+INSERT INTO BENEFICIARY (name, socialsecurity)
+VALUES ('Puskásné Virág Rozália', '123412348'),
+('Weierstrass Izidor', '123412355'),
+('Loch Emese Karmen', '123412362');
+
+INSERT INTO DONATION (date, eligible, reason, doctor, directed, placeId, donorId, beneficiaryId)
+VALUES ('2024-01-12', 1, NULL, 'Dr. Kovács Rezső', 1, 2, 4, 1),
+('2024-01-20', 0, 'Alacsony vérnyomás.', 'Dr. Fekete Tímea', 0, 2, 8, NULL),
+('2024-02-04', 1, NULL, 'Dr. Lusta Irén', 0, 1, 5, NULL),
+('2024-02-06', 1, NULL, 'Dr. Lusta Irén', 0, 1, 1, NULL),
+('2024-02-15', 1, NULL, 'Dr. Szabó Anna', 1, 3, 6, 2),
+('2024-03-02', 0, 'Májfunkció probléma.', 'Dr. Nagy Gergő', 0, 3, 9, NULL),
+('2024-03-10', 1, NULL, 'Dr. Tóth Petra', 0, 2, 3, NULL),
+('2024-03-18', 1, NULL, 'Dr. Szilágyi András', 0, 1, 6, NULL),
+('2024-03-19', 1, NULL, 'Dr. Balogh Lilla', 1, 5, 2, 3),
+('2024-03-19', 0, 'Vashiány.', 'Dr. Molnár Gábor', 0, 5, 8, NULL),
+('2024-03-19', 1, NULL, 'Dr. Kovács Ágnes', 0, 4, 6, NULL),
+('2024-04-08', 1, NULL, 'Dr. Fekete Zoltán', 0, 4, 4, NULL);

@@ -41,7 +41,7 @@
     <div class="form-group mb-1" [hidden]="donationForm.value.eligible">
       <label for="reason">Indoklás</label>
       <input type="text" class="form-control" id="reason" formControlName="reason">
-      <div class="text-danger form-text" *ngIf="donationForm.get('reason')?.invalid && donationForm.get('reason')?.dirty">{{errorMessage.reason}}</div>
+      <div class="text-danger form-text" *ngIf="donationForm.errors && donationForm.errors['reasonRequiredIfNotEligible'] && donationForm.get('reason')?.dirty">{{errorMessage.reason}}</div>
     </div>
 
     <div class="form-check mb-1" [hidden]="!donationForm.value.eligible">

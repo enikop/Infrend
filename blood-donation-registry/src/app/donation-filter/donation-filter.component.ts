@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { DonationCenterDTO, DonationDTO, DonorDTO } from "../../../models";
 import { DonationService } from '../service/donation.service';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
 import { formatSocialSecurity } from '../helpers/formatters';
-import { isIntervalValid } from "../helpers/validators";
+import { intervalValidator } from "../helpers/validators";
 import { ToastrService } from 'ngx-toastr';
 
 
@@ -47,7 +47,7 @@ export class DonationFilterComponent {
     donorId: this.formBuilder.control(0),
     startDate: this.formBuilder.control('2024-01-01'),
     endDate: this.formBuilder.control('2024-01-01')
-  }, {validators: this.intervalValidator});
+  }, {validators: intervalValidator});
 
   ngOnInit() {
     this.loadFilteredDonations({});
@@ -90,6 +90,7 @@ export class DonationFilterComponent {
     this.donationService.getAllFiltered(json).subscribe({
       next: (donations) => {
         this.donations = donations;
+        this.donations.sort(this.sortByDate);
         //Pass result to parent component in event
         this.donationsChangeEvent.emit(this.donations);
       },
@@ -125,26 +126,8 @@ export class DonationFilterComponent {
     }
   }
 
-  //Validate date interval
-  intervalValidator(control: AbstractControl): ValidationErrors | null {
-    const filterBy = control.get('filterBy');
-    const start = control.get('startDate');
-    const end = control.get('endDate');
-    if(filterBy && filterBy.value == 'interval' && start && end){
-      //If start is not a valid date
-      if(start.value == '') {
-        start.setErrors({startInvalid: true});
-      }
-      //If end is not a valid date
-      if(end.value == '') {
-        end.setErrors({endInvalid: true});
-      }
-      //If end is sooner than start
-      if(start.value != '' && end.value != '' && !isIntervalValid(start.value, end.value)){
-        return { intervalInvalid: true };
-      }
-    }
-    return null;
+  sortByDate(a: DonationDTO, b: DonationDTO): number {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
   }
 
   formatSocialSecurity(socialSecurity: string) : string{

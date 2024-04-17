@@ -22,14 +22,32 @@ export function donationFormValidator(control: AbstractControl): ValidationError
   const eligible = control.get('eligible');
   const reason = control.get('reason');
 
-  if (eligible && reason) {
-    if (eligible.value == false && !reason.value) {
-      reason.setErrors({ requiredIfNotEligible: true });
-      return { requiredIfNotEligible: true };
-    }
+  if (eligible && reason && eligible.value == false && !reason.value) {
+    return { reasonRequiredIfNotEligible: true };
   }
   return null;
 }
+
+export function intervalValidator(control: AbstractControl): ValidationErrors | null {
+    const filterBy = control.get('filterBy');
+    const start = control.get('startDate');
+    const end = control.get('endDate');
+    if(filterBy && filterBy.value == 'interval' && start && end){
+      //If start is not a valid date
+      if(start.value == '') {
+        start.setErrors({startInvalid: true});
+      }
+      //If end is not a valid date
+      if(end.value == '') {
+        end.setErrors({endInvalid: true});
+      }
+      //If end is sooner than start
+      if(start.value != '' && end.value != '' && !isIntervalValid(start.value, end.value)){
+        return { intervalInvalid: true };
+      }
+    }
+    return null;
+  }
 
 export function isIntervalValid(start: string, end: string): boolean {
   if (start == '' || end == '') return false;

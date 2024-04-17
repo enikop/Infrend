@@ -27,10 +27,12 @@ export class CenterFormComponent {
   private addressRegex=/^[0-9]{4} [A-ZÍÉÁÖŐÜÚÓŰ][a-zA-ZíéáöőüűóúÍÉÁÖŐÜÚÓŰ ]+, [a-zA-Z0-9íéáöőüűóúÍÉÁÖŐÜÚÓŰ .-/,]+/;
 
   centerForm = this.formBuilder.group({
+    id: -1,
     institutionId: this.formBuilder.control('', [Validators.required, Validators.pattern(this.institutionIdRegex)]),
     name: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
     address: this.formBuilder.control('', [Validators.required, Validators.pattern(this.addressRegex)]),
-    isActive: this.formBuilder.control(true)
+    isActive: this.formBuilder.control(true),
+    donations: []
   });
 
   errorMessage = {
@@ -42,8 +44,8 @@ export class CenterFormComponent {
   //Save form data as new donation center
   saveCenter() {
     if(this.centerForm.valid){
-      //Get form data, add missing fields (works without it too)
-      const centerData = {...this.centerForm.value,...{id:-1, donations: []}} as DonationCenterDTO;
+      //Get form data
+      const centerData = this.centerForm.value as DonationCenterDTO;
       this.createCenter(centerData);
     } else {
       this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});

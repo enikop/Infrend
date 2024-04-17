@@ -31,13 +31,15 @@ export class DonorFormComponent {
   maxDate = formatDate(this.getMaxBirthDate(), 'yyyy-MM-dd', 'en-US');
 
   donorForm = this.formBuilder.group({
+    id: -1,
     name: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
     gender: this.formBuilder.control('egyéb', [Validators.required]),
     citizenship: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
     birthPlace: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
     birthDate: this.formBuilder.control('2000-01-01', [Validators.required, maxDateValidator(this.maxDate)]),
     address: this.formBuilder.control('', [Validators.required, Validators.pattern(this.addressRegex)]),
-    socialSecurity: this.formBuilder.control('', [Validators.required, socialSecurityValidator()])
+    socialSecurity: this.formBuilder.control('', [Validators.required, socialSecurityValidator()]),
+    donations: []
   });
 
   errorMessage = {
@@ -52,8 +54,7 @@ export class DonorFormComponent {
   //Get form data and save as new donor if valid
   saveDonor() {
     if(this.donorForm.valid) {
-      //Add missing members, not necessary
-      const donorData = { ...this.donorForm.value, ...{ id: -1, donations:[] } } as DonorDTO;
+      const donorData = this.donorForm.value as DonorDTO;
       this.createDonor(donorData);
     } else {
       //Give the correct error message for date

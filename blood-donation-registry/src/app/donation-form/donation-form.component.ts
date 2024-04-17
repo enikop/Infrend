@@ -1,6 +1,6 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BeneficiaryDTO, DonationCenterDTO, DonationDTO, DonorDTO } from "../../../models";
 import { DonorService } from '../service/donor.service';
 import { DonationCenterService } from '../service/donation-center.service';
@@ -37,6 +37,7 @@ export class DonationFormComponent {
   private nameRegex = /^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+/;
 
   donationForm = this.formBuilder.group({
+    id: -1,
     place: this.formBuilder.control({}, [Validators.required]),
     donor: this.formBuilder.control({}, [Validators.required]),
     date: this.formBuilder.control(this.currentDate, [Validators.required, maxDateValidator(this.currentDate)]),
@@ -112,7 +113,7 @@ export class DonationFormComponent {
 
   save() {
     if (this.donationForm.valid) {
-      const formData = { ...this.donationForm.value, ...{ id: -1 } } as DonationDTO;
+      const formData = this.donationForm.value as DonationDTO;
       if (!formData.eligible) {
         //If donor is not found eligible, donation cannot be directed
         formData.directed = false;

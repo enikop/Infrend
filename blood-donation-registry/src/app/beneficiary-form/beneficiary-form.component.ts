@@ -27,8 +27,10 @@ export class BeneficiaryFormComponent {
   private nameRegex = /^[A-ZÍÉÁÖŐÜÚÓŰa-zíéáöőüűóú ,.'-]+$/;
 
   beneficiaryForm = this.formBuilder.group({
+    id: -1,
     name: this.formBuilder.control('', [Validators.required, Validators.pattern(this.nameRegex)]),
-    socialSecurity: this.formBuilder.control('', [Validators.required, socialSecurityValidator()])
+    socialSecurity: this.formBuilder.control('', [Validators.required, socialSecurityValidator()]),
+    donations: []
   });
 
   errorMessage = {
@@ -40,8 +42,8 @@ export class BeneficiaryFormComponent {
   saveBeneficiary(){
     //If the data given conforms to the rules given in the form initialization
     if (this.beneficiaryForm.valid) {
-      //Get form data and add missing fields (latter not necessary)
-      const beneficiaryData = {...this.beneficiaryForm.value, ...{id: -1, donations: []}} as BeneficiaryDTO;
+      //Get form data
+      const beneficiaryData = this.beneficiaryForm.value as BeneficiaryDTO;
       this.createBeneficiary(beneficiaryData);
     } else {
       this.toastr.error('Érvénytelen adatokat adott meg.', 'Sikertelen mentés', {toastClass: 'ngx-toastr toast-danger'});
